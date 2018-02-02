@@ -151,6 +151,8 @@ ApplicationWindow {
             }
 
             onPaint: {
+                var angle;
+                var xSign;
                 var ctx = getContext('2d')
                 if (lastPosById === undefined) {
                     lastPosById = {}
@@ -162,22 +164,20 @@ ApplicationWindow {
 
                     var disLastPos = center.distance(lastPosById[id].coordiantes);
                     if (disLastPos > radius) {
-                        var angle = Math.asin(center.yDistance(lastPosById[id].coordiantes) / disLastPos);
-                        var xSign = center.xDistance(lastPosById[id].coordiantes) < 0 ? -1 : 1;
+                        angle = Math.asin(center.yDistance(lastPosById[id].coordiantes) / disLastPos);
+                        xSign = center.xDistance(lastPosById[id].coordiantes) < 0 ? -1 : 1;
 
-                        lastPosById[id].coordiantes = new MyPainter.Coordinate(
-                                    myCanvas.center.x + xSign * Math.cos(angle) * radius,
-                                    myCanvas.center.y + xSign * xSign * Math.sin(angle) * radius)
+                        lastPosById[id].coordiantes.x = myCanvas.center.x + xSign * Math.cos(angle) * radius;
+                        lastPosById[id].coordiantes.y = myCanvas.center.y + Math.sin(angle) * radius;
                     }
 
                     var disPos = center.distance(posById[id].coordiantes);
                     if (disPos > radius) {
-                        var angle = Math.asin(center.yDistance(posById[id].coordiantes) / disPos);
-                        var xSign = center.xDistance(posById[id].coordiantes) < 0 ? -1 : 1;
+                        angle = Math.asin(center.yDistance(posById[id].coordiantes) / disPos);
+                        xSign = center.xDistance(posById[id].coordiantes) < 0 ? -1 : 1;
 
-                        posById[id].coordiantes = new MyPainter.Coordinate(
-                                    myCanvas.center.x + xSign * Math.cos(angle) * radius,
-                                    myCanvas.center.y + xSign * xSign * Math.sin(angle) * radius)
+                        posById[id].coordiantes.x = myCanvas.center.x + xSign * Math.cos(angle) * radius;
+                        posById[id].coordiantes.y = myCanvas.center.y + Math.sin(angle) * radius;
                     }
 
                     ctx.strokeStyle = colors[(colorIndex + parseInt(id, 10)) % colors.length]
@@ -191,8 +191,20 @@ ApplicationWindow {
                         ctx.lineTo(endPoint.x, endPoint.y)
                         ctx.stroke()
 
-                        startPoint = startPoint.rotate(center, deltaAngle);
-                        endPoint = endPoint.rotate(center, deltaAngle);
+                        startPoint.rotate(center, deltaAngle);
+                        endPoint.rotate(center, deltaAngle);
+                    }
+
+                    var startPoint = lastPosById[id].coordiantes;
+                    var endPoint = posById[id].coordiantes;
+                    for (var i = 0; i < myCanvas.edges; i++) {
+                        ctx.beginPath()
+                        ctx.moveTo(2 * center.x - startPoint.x , startPoint.y)
+                        ctx.lineTo(2 * center.x - endPoint.x, endPoint.y)
+                        ctx.stroke()
+
+                        startPoint.rotate(center, deltaAngle);
+                        endPoint.rotate(center, deltaAngle);
                     }
 
 

@@ -1,37 +1,44 @@
 function Coordinate(x, y) {
-    this.distance = function(coord) {
-        return Math.sqrt(Math.pow(coord.x - this.x, 2) + Math.pow(coord.y - this.y, 2));
-    }
-
-    this.rotate = function(center, angle) {
-        var radians = (Math.PI / 180) * angle;
-
-        var cx = center.x;
-        var cy = center.y;
-
-        var calcCos = Math.cos(radians);
-        var calcSin = Math.sin(radians);
-        var nx = (calcCos * (this.x - cx)) + (calcSin * (this.y - cy)) + cx;
-        var ny = (calcCos * (this.y - cy)) - (calcSin * (this.x - cx)) + cy;
-
-        return new Coordinate(nx, ny);
-    }
-
-    this.yDistance = function(coord) {
-        return coord.y - this.y;
-    }
-
-    this.xDistance = function(coord) {
-        return coord.x - this.x;
-    }
-
-    this.log = function(id) {
-        if (id) console.log("id:", id);
-        console.log("(x,y)", x, y);
-    }
-
     this.x = x;
     this.y = y;
-    return this;
+    this.radians = (Math.PI / 180);
+}
+
+Coordinate.prototype.distance = function(coord) {
+    var dx = coord.x - this.x;
+    var dy = coord.y - this.y;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+Coordinate.prototype.rotate = function(center, angle) {
+    var radians = this.radians * angle;
+
+    var cx = center.x;
+    var cy = center.y;
+
+    var dx = this.x - cx;
+    var dy = this.y - cy;
+
+    var calcCos = Math.cos(radians);
+    var calcSin = Math.sin(radians);
+
+    var nx = (calcCos * dx) + (calcSin * dy) + cx;
+    var ny = (calcCos * dy) - (calcSin * dx) + cy;
+
+    this.x = nx;
+    this.y = ny;
+}
+
+Coordinate.prototype.yDistance = function(coord) {
+    return coord.y - this.y;
+}
+
+Coordinate.prototype.xDistance = function(coord) {
+    return coord.x - this.x;
+}
+
+Coordinate.prototype.log = function(id) {
+    if (id) console.log("id:", id);
+    console.log("(x,y)", x, y);
 }
 
