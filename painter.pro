@@ -50,4 +50,5 @@ DISTFILES += \
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 }
 
-
+DISTFILES += \
+    images/icon.png

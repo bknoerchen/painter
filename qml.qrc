@@ -2,6 +2,27 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>coordinate.js</file>
+        <file>point.js</file>
+        <file>controls/Button.qml</file>
+        <file>controls/ColorPicker.qml</file>
+        <file>controls/SwitchButton.qml</file>
+        <file>controls/ColorCell.qml</file>
+        <file>controls/colorutils.js</file>
+        <file>controls/HUESlider.qml</file>
+        <file>controls/SBPicker.qml</file>
+        <file>images/grip.png</file>
+        <file>images/back.png</file>
+        <file>images/back@2x.png</file>
+        <file>images/back@3x.png</file>
+        <file>images/back@4x.png</file>
+        <file>images/drawer.png</file>
+        <file>images/drawer@2x.png</file>
+        <file>images/drawer@3x.png</file>
+        <file>images/drawer@4x.png</file>
+        <file>images/menu.png</file>
+        <file>images/menu@2x.png</file>
+        <file>images/menu@3x.png</file>
+        <file>images/menu@4x.png</file>
+        <file>PainterCanvas.qml</file>
     </qresource>
 </RCC>

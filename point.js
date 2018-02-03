@@ -1,16 +1,16 @@
-function Coordinate(x, y) {
+function Point(x, y) {
     this.x = x;
     this.y = y;
     this.radians = (Math.PI / 180);
 }
 
-Coordinate.prototype.distance = function(coord) {
-    var dx = coord.x - this.x;
-    var dy = coord.y - this.y;
+Point.prototype.distance = function(point) {
+    var dx = point.x - this.x;
+    var dy = point.y - this.y;
     return Math.sqrt(dx * dx + dy * dy);
 }
 
-Coordinate.prototype.rotate = function(center, angle) {
+Point.prototype.rotate = function(center, angle) {
     var radians = this.radians * angle;
 
     var cx = center.x;
@@ -29,16 +29,15 @@ Coordinate.prototype.rotate = function(center, angle) {
     this.y = ny;
 }
 
-Coordinate.prototype.yDistance = function(coord) {
-    return coord.y - this.y;
+Point.prototype.yDistance = function(point) {
+    return point.y - this.y;
 }
 
-Coordinate.prototype.xDistance = function(coord) {
-    return coord.x - this.x;
+Point.prototype.xDistance = function(point) {
+    return point.x - this.x;
 }
 
-Coordinate.prototype.log = function(id) {
+Point.prototype.log = function(id) {
     if (id) console.log("id:", id);
     console.log("(x,y)", x, y);
 }
-

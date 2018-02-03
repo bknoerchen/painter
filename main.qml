@@ -1,254 +1,178 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
-
-import "coordinate.js" as MyPainter
+import QtQuick.Layouts 1.3
+import "controls"
 
 ApplicationWindow {
     id: mainWindow
 
     title: qsTr("Paint")
-    width: 640
-    height: 480
+    width: Screen.width
+    height: Screen.height
+    color: "black"
     visible: true
 
-    Rectangle {
-        anchors.fill: parent
-        color: "black"
+    header: ToolBar {
+        id: header
 
-        FontMetrics {
-            id: fontMetrics
+        background: Rectangle {
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#00000000" }
+                GradientStop { position: 1.0; color: "#ff404244" }
+            }
         }
 
-        Component {
-            id: delegateComponent
+        RowLayout {
+            spacing: 20
+            anchors.fill: parent
+
+            ToolButton {
+                contentItem: Image {
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: stackView.depth > 1 ? "qrc:/images/back.png" : "qrc:/images/drawer.png"
+                }
+                onClicked: {
+                    if (stackView.depth > 1) {
+                        stackView.pop();
+                        drawer.close();
+                    } else {
+                        drawer.open();
+                    }
+                }
+            }
 
             Label {
-                color: "white"
-                text: modelData + 1
-                opacity: 1.0 - Math.abs(Tumbler.displacement) / (Tumbler.tumbler.visibleItemCount / 2)
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: fontMetrics.font.pixelSize * 1.25
-            }
-        }
-
-        Tumbler {
-            id: edgeTumbler
-
-            anchors {
-                top: parent.top
-                left: parent.left
-                bottom: saveButton.top
+                id: titleLabel
+                text: "Painter"
+                font.pixelSize: 20
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
             }
 
-            width: 40
-            model: 10
-            delegate: delegateComponent
-            visibleItemCount: 7
-            currentIndex: 4
+            ToolButton {
+                contentItem: Image {
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "qrc:/images/menu.png"
+                }
+                onClicked: optionsMenu.open()
 
-            onCurrentIndexChanged: {
-                myCanvas.edges = currentIndex + 1;
-            }
+                Menu {
+                    id: optionsMenu
+                    x: parent.width - width
+                    transformOrigin: Menu.TopRight
 
-        }
-
-        Connections {
-            target: _androidFileDialog
-            onImageHomeChanged: {
-
-                console.log("-----------------------------", _androidFileDialog.imageHome);
-            }
-        }
-
-        Button {
-            id: saveButton
-            anchors {
-                left: parent.left
-                bottom: clearButton.top
-            }
-
-            text: "S"
-            width: 40
-            height:40
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    _androidFileDialog.searchImage();
-
-
-
-                    myCanvas.save("MyMandala.png");
+                    MenuItem {
+                        text: "Settings"
+                        onTriggered: settingsDialog.open()
+                    }
+                    MenuItem {
+                        text: "About"
+                        onTriggered: aboutDialog.open()
+                    }
                 }
             }
         }
+    }
 
-        Button {
-            id: clearButton
-            anchors {
-                left: parent.left
-                bottom: parent.bottom
-            }
+    Drawer {
+        id: drawer
 
-            text: "C"
-            width: 40
-            height:40
+        width: mainWindow.width * 0.8
+        height: mainWindow.height - header.height
+        y: header.height
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    myCanvas.clearCanvas();
+        //interactive: false //stackView.depth === 1
+
+        Rectangle {
+            anchors.fill: parent
+
+            color: "#3E4042"
+
+            Column {
+
+                anchors {
+                    fill: parent
+                    leftMargin: 10
+                }
+
+                ColorPicker {
+                    height: 310;
+                    width: 300;
+
+                    onColorChanged: {
+                        canvas.lineColor = rgbColor;
+                    }
+
+                    onEnableTouchChangeColor: {
+                        console.log(colorArray);
+                        canvas.lineColors = colorArray;
+                    }
+                }
+
+
+                SwitchButton {
+                    height: 45
+                    width: 300
+                    text: qsTr("mirror on x-axis")
+                    checked: true
+
+                    onCheckedChanged: {
+                        canvas.mirrorOnX = checked
+                    }
                 }
             }
         }
+    }
 
-        Canvas {
-            id: myCanvas
+    StackView {
+        id: stackView
+        anchors.fill: parent
 
-            anchors {
-                top: parent.top
-                left: edgeTumbler.right
-                bottom: parent.bottom
-                right: parent.right
-            }
-
-            property var center: new MyPainter.Coordinate(width / 2, height / 2)
-            property int radius: Math.min(center.x, center.y)
-
-            antialiasing: true
-            renderTarget: Canvas.Image
-
-            property var lastPosById
-            property var posById
-            property var pointPath
-
-            property int edges
-
-            property int colorIndex: 0
-
-            property string pathString: ""
-
-            property var colors: [
-                "#00BFFF",
-                "#FF69B4",
-                "#F0E68C",
-                "#ADD8E6",
-                "#FFA07A",
-                "#9370DB",
-                "#98FB98",
-                "#DDA0DD",
-                "#FF6347",
-                "#40E0D0"
-
-            ]
-
-            function clearCanvas() {
-                var ctx = getContext("2d");
-                ctx.reset();
-                myCanvas.requestPaint();
-            }
-
-            onPaint: {
-                var angle;
-                var xSign;
-                var ctx = getContext('2d')
-                if (lastPosById === undefined) {
-                    lastPosById = {}
-                    posById = {}
-                    pointPath = []
-                }
-
-                for (var id in lastPosById) {
-
-                    var disLastPos = center.distance(lastPosById[id].coordiantes);
-                    if (disLastPos > radius) {
-                        angle = Math.asin(center.yDistance(lastPosById[id].coordiantes) / disLastPos);
-                        xSign = center.xDistance(lastPosById[id].coordiantes) < 0 ? -1 : 1;
-
-                        lastPosById[id].coordiantes.x = myCanvas.center.x + xSign * Math.cos(angle) * radius;
-                        lastPosById[id].coordiantes.y = myCanvas.center.y + Math.sin(angle) * radius;
-                    }
-
-                    var disPos = center.distance(posById[id].coordiantes);
-                    if (disPos > radius) {
-                        angle = Math.asin(center.yDistance(posById[id].coordiantes) / disPos);
-                        xSign = center.xDistance(posById[id].coordiantes) < 0 ? -1 : 1;
-
-                        posById[id].coordiantes.x = myCanvas.center.x + xSign * Math.cos(angle) * radius;
-                        posById[id].coordiantes.y = myCanvas.center.y + Math.sin(angle) * radius;
-                    }
-
-                    ctx.strokeStyle = colors[(colorIndex + parseInt(id, 10)) % colors.length]
-                    var deltaAngle = 360 / myCanvas.edges;
-                    var startPoint = lastPosById[id].coordiantes;
-                    var endPoint = posById[id].coordiantes;
-
-                    for (var i = 0; i < myCanvas.edges; i++) {
-                        ctx.beginPath()
-                        ctx.moveTo(startPoint.x, startPoint.y)
-                        ctx.lineTo(endPoint.x, endPoint.y)
-                        ctx.stroke()
-
-                        startPoint.rotate(center, deltaAngle);
-                        endPoint.rotate(center, deltaAngle);
-                    }
-
-                    var startPoint = lastPosById[id].coordiantes;
-                    var endPoint = posById[id].coordiantes;
-                    for (var i = 0; i < myCanvas.edges; i++) {
-                        ctx.beginPath()
-                        ctx.moveTo(2 * center.x - startPoint.x , startPoint.y)
-                        ctx.lineTo(2 * center.x - endPoint.x, endPoint.y)
-                        ctx.stroke()
-
-                        startPoint.rotate(center, deltaAngle);
-                        endPoint.rotate(center, deltaAngle);
-                    }
-
-
-                    // update lastpos
-                    lastPosById[id] = posById[id]
-                }
-            }
-
-            MultiPointTouchArea {
-                anchors.fill: parent
-
-                onPressed: {
-                    for (var i = 0; i < touchPoints.length; ++i) {
-                        var point = touchPoints[i]
-                        // update both so we have data
-                        myCanvas.lastPosById[point.pointId] = {
-                            coordiantes: new MyPainter.Coordinate(point.x, point.y)
-                        }
-                        myCanvas.posById[point.pointId] = {
-                            coordiantes: new MyPainter.Coordinate(point.x, point.y)
-                        }
-                    }
-                }
-                onUpdated: {
-                    for (var i = 0; i < touchPoints.length; ++i) {
-                        var point = touchPoints[i]
-                        // only update current pos, last update set on paint
-                        myCanvas.posById[point.pointId] = {
-                            coordiantes: new MyPainter.Coordinate(point.x, point.y)
-                        }
-                    }
-                    myCanvas.requestPaint()
-                }
-                onReleased: {
-                    for (var i = 0; i < touchPoints.length; ++i) {
-                        var point = touchPoints[i]
-                        delete myCanvas.lastPosById[point.pointId]
-                        delete myCanvas.posById[point.pointId]
-                    }
-                    myCanvas.colorIndex++
-                    if (myCanvas.colorIndex > (myCanvas.colors.length - 1)) myCanvas.colorIndex = 0;
-                }
-            }
+        initialItem: PainterCanvas {
+            id: canvas
+            anchors.fill: parent
         }
+
+ //           Pane {
+ //           id: pane
+
+//            Image {
+//                id: logo
+//                width: pane.availableWidth / 2
+//                height: pane.availableHeight / 2
+//                anchors.centerIn: parent
+//                anchors.verticalCenterOffset: -50
+//                fillMode: Image.PreserveAspectFit
+//                source: "images/qt-logo.png"
+//            }
+
+//            Label {
+//                text: "Painting"
+//                anchors.margins: 20
+//                anchors.top: parent.bottom
+//                anchors.left: parent.left
+//                anchors.right: parent.right
+//                horizontalAlignment: Label.AlignHCenter
+//                verticalAlignment: Label.AlignVCenter
+//                wrapMode: Label.Wrap
+//            }
+
+//            Image {
+//                id: arrow
+//                source: "images/arrow.png"
+//                anchors.left: parent.left
+//                anchors.bottom: parent.bottom
+//            }
+
 
     }
+
+
 }
