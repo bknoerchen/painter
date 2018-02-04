@@ -3,7 +3,11 @@ import QtQuick 2.9
 Item {
     id: root
 
-    signal hueChanged(real value)
+    signal hueColorChanged(real value)
+
+    function restoreHue(hue) {
+        pickerCursor.y = root.height * (1 - hue);
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -55,7 +59,7 @@ Item {
             function handleMouse(mouse) {
                 if (mouse.buttons & Qt.LeftButton) {
                     pickerCursor.y = Math.max(0, Math.min(height, mouse.y))
-                    root.hueChanged(1 - pickerCursor.y / height)
+                    root.hueColorChanged(1 - pickerCursor.y / height)
                 }
             }
             onPositionChanged: handleMouse(mouse)

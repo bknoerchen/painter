@@ -56,8 +56,8 @@ Item {
                     Layout.preferredHeight: sbPicker.height
                     Layout.maximumHeight: sbPicker.height
 
-                    onHueChanged: {
-                        sbPicker.hueColor = value;
+                    Component.onCompleted: {
+                        hueSlider.hueColorChanged.connect(sbPicker.hueColorChange);
                     }
                 }
 
@@ -134,6 +134,9 @@ Item {
                             onChecked: {
                                 predefinedColorsGrid.uncheckOtherCells();
                                 currentColorChoosen.color = color;
+
+                                sbPicker.restoreHSB(color.hsvHue, color.hsvSaturation, color.hsvValue);
+                                hueSlider.restoreHue(color.hsvHue);
 
                                 predefinedColors.currentIndex = index
                             }

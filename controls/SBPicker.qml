@@ -6,11 +6,19 @@ Item {
     id: root
     property real hueColor: 0
 
-    onHueColorChanged: {
-        root.sbChanged(pickerCursor.x/width, 1 - pickerCursor.y/(height - grip.height/2 - pickerCursor.r));
+    signal sbChanged(real saturation,  real brightness)
+
+    function restoreHSB(hsvHue, hsvSaturation, hsvValue) {
+        console.log("restore", hsvSaturation, hsvValue);
+        pickerCursor.x = width * hsvSaturation;
+        pickerCursor.y = height * (1 - hsvValue);
+        root.hueColor = hsvHue;
     }
 
-    signal sbChanged(real saturation,  real brightness)
+    function hueColorChange(color) {
+        hueColor = color
+        root.sbChanged(pickerCursor.x/width, 1 - pickerCursor.y/height);
+    }
 
     Rectangle {
         anchors.fill: parent;
@@ -63,7 +71,7 @@ Item {
             if (mouse.buttons & Qt.LeftButton) {
                 pickerCursor.x = Math.max(0, Math.min(width,  mouse.x));
                 pickerCursor.y = Math.max(0, Math.min(height, mouse.y));
-                console.log("s/l", pickerCursor.x/width, 1 - pickerCursor.y/height);
+                console.log("save", pickerCursor.x/width, 1 - pickerCursor.y/height);
                 root.sbChanged(pickerCursor.x/width, 1 - pickerCursor.y/height)
             }
         }

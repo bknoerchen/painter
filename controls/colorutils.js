@@ -2,7 +2,6 @@
 
 //  creates color value from hue, saturation, brightness, alpha
 function hsba(h, s, b, a) {
-    console.log("___",h,s,b,a);
     var lightness = (2 - s)*b;
     var satHSL = s*b/((lightness <= 1) ? lightness : 2 - lightness);
     lightness /= 2;
