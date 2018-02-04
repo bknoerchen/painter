@@ -6,115 +6,34 @@ import "point.js" as MyPainter
 Rectangle {
     id: root
 
+    property alias edges: myCanvas.edges
+
+    signal clearCanvas()
+
     anchors.fill: parent
     color: "black"
 
     property color lineColor: "#ffffff"
-    property var lineColors: []
+    property var lineColors: [
+        "#00bfff",
+        "#ff69b4",
+        "#f0e68c",
+        "#add8e6",
+        "#ffa07a",
+        "#9370db",
+        "#98fb98",
+        "#dda0dd",
+        "#ff6347",
+        "#40e0d0"
+    ]
     property bool mirrorOnX: true
-
-    FontMetrics {
-        id: fontMetrics
-    }
-
-    Component {
-        id: delegateComponent
-
-        Label {
-            color: "white"
-            text: modelData + 1
-            opacity: 1.0 - Math.abs(Tumbler.displacement) / (Tumbler.tumbler.visibleItemCount / 2)
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pixelSize: fontMetrics.font.pixelSize * 1.25
-        }
-    }
-
-    Tumbler {
-        id: edgeTumbler
-
-        anchors {
-            top: parent.top
-            left: parent.left
-            bottom: saveButton.top
-        }
-
-        width: 40
-        model: 10
-        delegate: delegateComponent
-        visibleItemCount: 7
-        currentIndex: 4
-
-        onCurrentIndexChanged: {
-            myCanvas.edges = currentIndex + 1;
-        }
-    }
-
-//    Connections {
-//        target: _androidFileDialog
-//        onImageHomeChanged: {
-
-//            console.log("-----------------------------", _androidFileDialog.imageHome);
-//        }
-//    }
-
-    Button {
-        id: saveButton
-        anchors {
-            left: parent.left
-            bottom: clearButton.top
-        }
-
-        text: "S"
-        width: 40
-        height:40
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                //_androidFileDialog.searchImage();
-                colorDialog.visible = true
-
-
-                myCanvas.save("MyMandala.png");
-            }
-        }
-    }
-
-    Button {
-        id: clearButton
-        anchors {
-            left: parent.left
-            bottom: parent.bottom
-        }
-
-        text: "C"
-        width: 40
-        height:40
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                myCanvas.clearCanvas();
-            }
-        }
-    }
+    property bool captureLinesInCircle: true
 
     Canvas {
         id: myCanvas
 
-        anchors {
-            top: parent.top
-            left: edgeTumbler.right
-            bottom: parent.bottom
-            right: parent.right
-        }
-
         property var center: new MyPainter.Point(width / 2, height / 2)
         property int radius: Math.min(center.x, center.y)
-
-        antialiasing: true
-        renderTarget: Canvas.Image
 
         property var lastPosById
         property var posById
@@ -126,10 +45,18 @@ Rectangle {
 
         property string pathString: ""
 
+        anchors.fill: parent
+        antialiasing: true
+        renderTarget: Canvas.Image
+
         function clearCanvas() {
             var ctx = getContext("2d");
             ctx.reset();
             myCanvas.requestPaint();
+        }
+
+        Component.onCompleted: {
+            root.clearCanvas.connect(clearCanvas);
         }
 
         onPaint: {
@@ -147,7 +74,7 @@ Rectangle {
             for (var id in lastPosById) {
 
                 var disLastPos = center.distance(lastPosById[id].coordiantes);
-                if (disLastPos > radius) {
+                if (disLastPos > radius && captureLinesInCircle) {
                     angle = Math.asin(center.yDistance(lastPosById[id].coordiantes) / disLastPos);
                     xSign = center.xDistance(lastPosById[id].coordiantes) < 0 ? -1 : 1;
 
@@ -156,7 +83,7 @@ Rectangle {
                 }
 
                 var disPos = center.distance(posById[id].coordiantes);
-                if (disPos > radius) {
+                if (disPos > radius && captureLinesInCircle) {
                     angle = Math.asin(center.yDistance(posById[id].coordiantes) / disPos);
                     xSign = center.xDistance(posById[id].coordiantes) < 0 ? -1 : 1;
 

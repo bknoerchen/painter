@@ -178,6 +178,7 @@ Item {
 
             SwitchButton {
                 text: qsTr("touch changes color")
+                checked: true
 
                 onCheckedChanged: {
                     root.enableTouchChangeColor(checked ? predefinedColors.colors : [])

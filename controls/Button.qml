@@ -7,7 +7,7 @@ Rectangle {
     radius: 5
     property string btnText: "Name"
     property bool btnEnable: true
-    property bool btnBlue: true
+    property bool btnBlue: false
     opacity: btnEnable ? 1.0 : 0.5
     signal clicked()
     gradient: btnBlue ? blueButton : greenButton
