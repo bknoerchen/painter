@@ -46,20 +46,9 @@ Item {
             height: parent.r * 2
             radius: parent.r
 
-            border.color: "black"
+            border.color: "white"
             border.width: 2
             color: "transparent"
-
-            Rectangle {
-                anchors {
-                    fill: parent
-                    margins: 2
-                }
-                border.color: "white"
-                border.width: 2
-                radius: width/2
-                color: "transparent"
-            }
         }
     }
     MouseArea {

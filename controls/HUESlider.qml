@@ -33,21 +33,11 @@ Item {
                 x: -2;
                 y: -height * 0.5
                 width: root.width + 4;
-                height: 11
+                height: 7
 
-                border.color: "black"
+                border.color: "White"
                 border.width: 2
                 color: "transparent"
-
-                Rectangle {
-                    anchors {
-                        fill: parent
-                        margins: 2
-                    }
-                    border.color: "white"
-                    border.width: 2
-                    color: "transparent"
-                }
             }
         }
 
