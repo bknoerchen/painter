@@ -12,7 +12,7 @@ function hsba(h, s, b, a) {
 //  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
 function fullColorString(clr, a) {
     return "#" + ((Math.ceil(a*255) + 256).toString(16).substr(1, 2) +
-            clr.toString().substr(1, 6)).toUpperCase();
+                  clr.toString().substr(1, 6)).toUpperCase();
 }
 
 function colorString(clr) {

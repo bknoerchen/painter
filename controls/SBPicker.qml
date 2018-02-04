@@ -52,40 +52,19 @@ Item {
                 radius: width/2
                 color: "transparent"
             }
-            Rectangle {
-                id: grip
-
-                border.color: "black"
-                border.width: 2
-                height: 21
-                width: height
-                radius: 2
-
-                x: -3
-                y: pickerCursor.r * 2 - 1
-
-                Image {
-                    anchors {
-                        fill: parent
-                        margins: 2
-                    }
-                    source: "qrc:/images/grip.png"
-                    fillMode: Image.Tile
-                }
-            }
         }
     }
     MouseArea {
         anchors {
             fill: parent
-            bottomMargin: -grip.height/2 - pickerCursor.r
         }
 
         function handleMouse(mouse) {
             if (mouse.buttons & Qt.LeftButton) {
                 pickerCursor.x = Math.max(0, Math.min(width,  mouse.x));
-                pickerCursor.y = Math.max(0, Math.min(height - grip.height/2 - pickerCursor.r, mouse.y - grip.y));
-                root.sbChanged(pickerCursor.x/width, 1 - pickerCursor.y/(height - grip.height/2 - pickerCursor.r))
+                pickerCursor.y = Math.max(0, Math.min(height, mouse.y));
+                console.log("s/l", pickerCursor.x/width, 1 - pickerCursor.y/height);
+                root.sbChanged(pickerCursor.x/width, 1 - pickerCursor.y/height)
             }
         }
         onPositionChanged: handleMouse(mouse)
