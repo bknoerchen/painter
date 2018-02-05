@@ -104,17 +104,25 @@ ApplicationWindow {
                 width: 300
 
                 ColorPicker {
+                    id: colorPicker
+
                     height: 310;
                     width: 300;
 
                     onColorChanged: {
                         canvas.lineColor = rgbColor;
                     }
+                }
 
-                    onEnableTouchChangeColor: {
-                        console.log(colorArray);
-                        canvas.lineColors = colorArray;
-                    }
+                SwitchButton {
+                    height: 45
+                    width: 300
+                    checked: true
+                    text: qsTr("touch changes color")
+
+                        onCheckedChanged: {
+                            canvas.lineColors = checked ? colorPicker.predefinedColors : [];
+                        }
                 }
 
                 SwitchButton {

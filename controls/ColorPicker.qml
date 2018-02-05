@@ -8,9 +8,9 @@ Item {
     id: root
 
     property int globalSpacing: 10
+    property alias predefinedColors: predefinedColors.colors
 
     signal colorChanged(color rgbColor)
-    signal enableTouchChangeColor(var colorArray)
 
     ColumnLayout {
         spacing: globalSpacing
@@ -167,24 +167,6 @@ Item {
                     width: height
 
                     color: "white"
-                }
-            }
-        }
-
-        //////
-
-        Item {
-            Layout.alignment: Qt.AlignCenter
-
-            Layout.preferredWidth: 200
-            Layout.preferredHeight: 10
-
-            SwitchButton {
-                text: qsTr("touch changes color")
-                checked: true
-
-                onCheckedChanged: {
-                    root.enableTouchChangeColor(checked ? predefinedColors.colors : [])
                 }
             }
         }

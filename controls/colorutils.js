@@ -4,8 +4,7 @@
 function hsba(h, s, b, a) {
     var lightness = (2 - s)*b;
     var satHSL = s*b/((lightness <= 1) ? lightness : 2 - lightness);
-    lightness /= 2;
-    return Qt.hsla(h, satHSL, lightness, a);
+    return Qt.hsva(h, satHSL, lightness, a);
 }
 
 //  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
