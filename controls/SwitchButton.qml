@@ -10,7 +10,6 @@ Switch {
     property color switchColor: "white"
     property color textColor: "white"
 
-    text: ""
 
     indicator: Rectangle {
         implicitWidth: 48

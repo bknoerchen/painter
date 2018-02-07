@@ -4,6 +4,7 @@ import "colorutils.js" as ColorUtils
 
 Item {
     id: root
+
     property real hueColor: 0
 
     signal sbChanged(real saturation,  real brightness)
@@ -35,6 +36,7 @@ Item {
             GradientStop { position: 0.0; color: "#00000000" }
         }
     }
+
     Item {
         id: pickerCursor
         property int r : 8

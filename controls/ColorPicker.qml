@@ -4,76 +4,78 @@ import QtQuick.Layouts 1.3
 
 import "colorutils.js" as ColorUtils
 
-Item {
+GridLayout {
     id: root
 
-    property int globalSpacing: 10
+    property int globalSpacing: 5
     property alias predefinedColors: predefinedColors.colors
 
     signal colorChanged(color rgbColor)
+    rows: 2
+    flow: GridLayout.LeftToRight
+    columns: 2
 
-    ColumnLayout {
-        spacing: globalSpacing
+    SBPicker {
+        id: sbPicker
 
-        Item{
-            Layout.alignment: Qt.AlignCenter
+        Layout.margins: globalSpacing
 
-            Layout.preferredWidth: 200
-            Layout.preferredHeight: 200
+        Layout.fillHeight: true
+        Layout.fillWidth: true
 
-            RowLayout {
-                id: layout
-                anchors.fill: parent
-                spacing: globalSpacing
+        Layout.minimumHeight: predefinedColors.width + globalSpacing
+        Layout.preferredHeight: 300
+        Layout.maximumHeight: 500
 
-                SBPicker {
-                    id: sbPicker
+        Layout.minimumWidth: predefinedColors.width + globalSpacing
+        Layout.preferredWidth: 300
+        Layout.maximumWidth: 500
 
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 100
-                    Layout.preferredWidth: 200
-                    Layout.maximumWidth: 300
-
-                    Layout.minimumHeight: width
-                    Layout.preferredHeight: width
-                    Layout.maximumHeight: width
-
-                    onSbChanged: {
-                        var colorValue = ColorUtils.hsba(hueColor, saturation, brightness, 1)
-                        predefinedColors.setColor(ColorUtils.fullColorString(colorValue, 1));
-                    }
-                }
-
-                HUESlider {
-                    id: hueSlider
-
-                    Layout.fillWidth: false
-                    Layout.minimumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.maximumWidth: 20
-
-                    Layout.minimumHeight: sbPicker.height
-                    Layout.preferredHeight: sbPicker.height
-                    Layout.maximumHeight: sbPicker.height
-
-                    Component.onCompleted: {
-                        hueSlider.hueColorChanged.connect(sbPicker.hueColorChange);
-                    }
-                }
-
-                Item {
-                    Layout.fillWidth: true
-                }
-            }
+        onSbChanged: {
+            var colorValue = ColorUtils.hsba(hueColor, saturation, brightness, 1)
+            predefinedColors.setColor(ColorUtils.fullColorString(colorValue, 1));
         }
+    }
 
-        //////
+    HUESlider {
+        id: hueSlider
+
+        Layout.margins: globalSpacing
+
+        Layout.fillHeight: true
+        Layout.fillWidth: false
+
+        Layout.preferredHeight: 200
+        Layout.maximumHeight: 500
+
+        Layout.preferredWidth: predefinedColors.height
+        Layout.maximumWidth: predefinedColors.height
+
+        Component.onCompleted: {
+            hueSlider.hueColorChanged.connect(sbPicker.hueColorChange);
+        }
+    }
+
+    Item {
+
+        Layout.margins: globalSpacing
+        Layout.columnSpan: 2
+        Layout.minimumHeight: predefinedColors.height
+        Layout.preferredHeight: predefinedColors.height
+        Layout.maximumHeight: predefinedColors.height
+
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
         Item {
-            Layout.alignment: Qt.AlignCenter
 
-            Layout.preferredWidth: 200
-            Layout.preferredHeight: predefinedColors.height
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+            }
+
+            height: predefinedColors.height
+            width: predefinedColors.width + currentColorChoosen.width
 
             Item {
                 id : predefinedColors
@@ -156,7 +158,7 @@ Item {
 
                     anchors {
                         left: predefinedColors.right
-                        leftMargin: predefinedColors.cellSpacing
+                        leftMargin: root.globalSpacing * 4
                     }
 
                     onColorChanged: {
@@ -172,3 +174,4 @@ Item {
         }
     }
 }
+

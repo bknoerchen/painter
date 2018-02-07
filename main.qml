@@ -84,7 +84,7 @@ ApplicationWindow {
     Drawer {
         id: drawer
 
-        width: 300
+        width: parent.width * 0.95
         height: mainWindow.height - header.height
         y: header.height
 
@@ -96,59 +96,63 @@ ApplicationWindow {
 
             color: "#3E4042"
 
-            Column {
+            Flow {
                 anchors {
-                    left: parent.left
-                    leftMargin: 10
+                    fill: parent
+                    margins: 10
                 }
-                width: 300
+                width: drawerContainer.width
 
                 ColorPicker {
                     id: colorPicker
 
-                    height: 310;
-                    width: 300;
+                    width: Math.max(drawer.width * 0.4, 60)
+                    height: Math.max(drawer.width * 0.4, 60)
 
                     onColorChanged: {
                         canvas.lineColor = rgbColor;
                     }
                 }
 
-                SwitchButton {
-                    height: 45
-                    width: 300
-                    checked: true
-                    text: qsTr("touch changes color")
+                Column {
+                    SwitchButton {
+                        height: 45
+                        width: 300
+                        checked: true
+                        text: qsTr("touch changes color")
 
                         onCheckedChanged: {
                             canvas.lineColors = checked ? colorPicker.predefinedColors : [];
                         }
-                }
-
-                SwitchButton {
-                    height: 45
-                    width: 300
-                    text: qsTr("mirror on x-axis")
-                    checked: true
-
-                    onCheckedChanged: {
-                        canvas.mirrorOnX = checked
                     }
-                }
 
-                SwitchButton {
-                    height: 45
-                    width: 300
-                    text: qsTr("capture lines in circle")
-                    checked: true
+                    SwitchButton {
+                        height: 45
+                        width: 300
+                        text: qsTr("mirror on y-axis")
+                        checked: true
 
-                    onCheckedChanged: {
-                        canvas.captureLinesInCircle = checked
+                        onCheckedChanged: {
+                            canvas.mirrorOnX = checked
+                        }
+                    }
+
+                    SwitchButton {
+                        height: 45
+                        width: 300
+                        text: qsTr("capture lines in circle")
+                        checked: true
+
+                        onCheckedChanged: {
+                            canvas.captureLinesInCircle = checked
+                        }
                     }
                 }
             }
 
             Rectangle {
+                id: edgeTumblerContainer
+
                 height: drawerContainer.height
                 anchors {
                     right: parent.right
@@ -262,7 +266,6 @@ ApplicationWindow {
                         }
                     }
                 }
-
             }
         }
     }

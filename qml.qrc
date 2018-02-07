@@ -24,5 +24,6 @@
         <file>images/menu@3x.png</file>
         <file>images/menu@4x.png</file>
         <file>PainterCanvas.qml</file>
+        <file>images/icon.png</file>
     </qresource>
 </RCC>
