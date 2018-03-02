@@ -7,7 +7,7 @@ function hsba(h, s, b, a) {
     return Qt.hsva(h, satHSL, lightness, a);
 }
 
-//  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
+//  creates a full color string from color value and alpha[0..1], e.g. "#ff00ff00"
 function fullColorString(clr, a) {
     return "#" + ((Math.ceil(a*255) + 256).toString(16).substr(1, 2) +
                   clr.toString().substr(1, 6)).toUpperCase();

@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
+
 import "controls"
 
 ApplicationWindow {
@@ -147,6 +148,17 @@ ApplicationWindow {
                             canvas.captureLinesInCircle = checked
                         }
                     }
+
+//                    SwitchButton {
+//                        height: 45
+//                        width: 300
+//                        text: qsTr("enable floodfill")
+//                        checked: false
+
+//                        onCheckedChanged: {
+//                            canvas.floodFillEnabled = checked
+//                        }
+//                    }
                 }
             }
 
