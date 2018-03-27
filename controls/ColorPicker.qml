@@ -75,7 +75,7 @@ GridLayout {
             }
 
             height: predefinedColors.height
-            width: predefinedColors.width + currentColorChoosen.width
+            width: predefinedColors.width + currentColorChosen.width
 
             Item {
                 id : predefinedColors
@@ -105,7 +105,7 @@ GridLayout {
                         predefinedColorsRepeater.itemAt(currentIndex).color = color;
                         predefinedColors.colors[currentIndex] = color;
                     }
-                    currentColorChoosen.color = color
+                    currentColorChosen.color = color
                 }
 
                 height: (cellRowCount - 1) * cellSpacing + cellRowCount * itemHeight
@@ -135,7 +135,7 @@ GridLayout {
 
                             onChecked: {
                                 predefinedColorsGrid.uncheckOtherCells();
-                                currentColorChoosen.color = color;
+                                currentColorChosen.color = color;
 
                                 sbPicker.restoreHSB(color.hsvHue, color.hsvSaturation, color.hsvValue);
                                 hueSlider.restoreHue(color.hsvHue);
@@ -154,7 +154,7 @@ GridLayout {
                 }
 
                 Rectangle {
-                    id: currentColorChoosen
+                    id: currentColorChosen
 
                     anchors {
                         left: predefinedColors.right

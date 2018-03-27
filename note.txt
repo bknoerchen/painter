@@ -1,0 +1,40 @@
+
+#include <QJSValueIterator>
+template<typename T> struct TD;
+//TD<decltype(pixel)> td;
+
+
+
+//class JSConsole : public QObject
+//{
+//    Q_OBJECT
+//public:
+//    explicit JSConsole(QObject *parent = 0) :
+//        QObject(parent)
+//    {
+//    }
+
+//signals:
+
+//public slots:
+//    void log(QString msg)
+//    {
+//        qDebug() << "jsConsole: "<< msg;
+//    }
+//};
+
+
+//JSConsole console;
+//QJSValue consoleObj =  engine.newQObject(&console);
+//engine.globalObject().setProperty("console", consoleObj);
+
+
+//std::list<QVariant> returnVal(::workingImage.begin(), ::workingImage.end());
+
+//return QVariantList::fromStdList(returnVal);
+
+//return &::workingImage[0];
+
+// data = reinterpret_cast<QRgb(&)[length]>(data);
+
+return QJSValue();

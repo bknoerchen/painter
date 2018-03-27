@@ -149,16 +149,38 @@ ApplicationWindow {
                         }
                     }
 
-//                    SwitchButton {
-//                        height: 45
-//                        width: 300
-//                        text: qsTr("enable floodfill")
-//                        checked: false
+                    SwitchButton {
+                        height: 45
+                        width: 300
+                        text: qsTr("blur on")
+                        checked: false
 
-//                        onCheckedChanged: {
-//                            canvas.floodFillEnabled = checked
-//                        }
-//                    }
+                        onCheckedChanged: {
+                            canvas.blurActivated = checked
+                        }
+                    }
+
+                    SwitchButton {
+                        height: 45
+                        width: 300
+                        text: qsTr("enable floodfill")
+                        checked: false
+
+                        onCheckedChanged: {
+                            canvas.floodFillEnabled = checked
+                        }
+                    }
+
+                    SwitchButton {
+                        height: 45
+                        width: 300
+                        text: qsTr("enable rainbow color")
+                        checked: false
+
+                        onCheckedChanged: {
+                            canvas.rainbowColorEnabled = checked
+                        }
+                    }
                 }
             }
 

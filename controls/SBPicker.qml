@@ -5,7 +5,7 @@ import "colorutils.js" as ColorUtils
 Item {
     id: root
 
-    property real hueColor: 0
+        property real hueColor: 0
 
     signal sbChanged(real saturation,  real brightness)
 

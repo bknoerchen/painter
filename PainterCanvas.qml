@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 
 import "point.js" as CanvasTools
+import "controls/colorutils.js" as ColorUtils
 
 Rectangle {
     id: root
@@ -26,9 +27,25 @@ Rectangle {
         "#ff6347",
         "#40e0d0"
     ]
+
+    property var rainbowColors: [
+        "#FF0000",
+        "#E2571E",
+        "#FF7F00",
+        "#FFFF00",
+        "#00FF00",
+        "#96bf33",
+        "#0000FF",
+        "#4B0082",
+        "#8B00FF",
+        "#ffffff"
+    ]
+
     property bool mirrorOnX: true
     property bool captureLinesInCircle: true
+    property bool blurActivated: false
     property bool floodFillEnabled: false
+    property bool rainbowColorEnabled: false
 
     Canvas {
         id: myCanvas
@@ -43,6 +60,16 @@ Rectangle {
         property int edges
 
         property int colorIndex: 0
+        property int rainbowColorIndex: 0
+        property int rainbowColorIntervalCounter: 0
+
+        // number of different colors (min 6, max 360)
+        property int rainbowColorIndexStep: 360 / 60
+
+        // how many strokes till color changes (min 1, rainbowColorIndexStep * 5)
+        property int rainbowColorIntervalLength: rainbowColorIndexStep * 1
+
+        property int hue: 0
 
         property string pathString: ""
 
@@ -72,14 +99,24 @@ Rectangle {
                 pointPath = []
             }
 
+            var touchPointCounter = 0;
             for (var id in lastPosById) {
-
-                var currentColor = root.lineColors.length > 0 ?
-                            root.lineColors[(colorIndex + parseInt(id, 10)) % root.lineColors.length] :
-                            root.lineColor;
+                var currentColor = rainbowColorEnabled
+                        ? ColorUtils.colorFromHue((rainbowColorIndex + ((parseInt(id, 10) % rainbowColorIndexStep) * (360 / rainbowColorIndexStep))) % 360)     //root.rainbowColors[(rainbowColorIndex + parseInt(id, 10)) % root.rainbowColors.length]
+                        : (root.lineColors.length > 0 ?
+                               root.lineColors[(colorIndex + parseInt(id, 10)) % root.lineColors.length] :
+                               root.lineColor);
 
                 if (floodFillEnabled) {
-                    CanvasTools.floodFill(ctx, lastPosById[id].coordiantes, currentColor);
+                    //var imageData = canvas.toImage(0, 0, canvas.width, canvas.height);
+                    ctx.lineWidth = 3;
+                    var k = ctx.getImageData(0, 0, 10, 10);
+                    _cppController.floodFill(k.data[0], k.data[k.length - 4],
+                                             currentColor,
+                                             lastPosById[id].coordiantes.x,
+                                             lastPosById[id].coordiantes.y,
+                                             10,
+                                             10);
                 } else {
 
                     var disLastPos = center.distance(lastPosById[id].coordiantes);
@@ -100,6 +137,12 @@ Rectangle {
                         posById[id].coordiantes.y = myCanvas.center.y + Math.sin(angle) * radius;
                     }
 
+                    ctx.lineWidth = 3;
+                    //context.strokeStyle = 'rgb(' + currentColor.red + ', ' + currentColor.green + ', ' + currentColor.blue + '/*, 50%, 50%*/)';
+                    if (blurActivated) {
+                        ctx.shadowColor = currentColor;
+                        ctx.shadowBlur = context.lineWidth * 2;
+                    }
                     ctx.strokeStyle = currentColor;
                     var deltaAngle = 360 / myCanvas.edges;
                     startPoint = lastPosById[id].coordiantes;
@@ -141,7 +184,8 @@ Rectangle {
 
             onPressed: {
                 for (var i = 0; i < touchPoints.length; ++i) {
-                    var point = touchPoints[i]
+                    var point = touchPoints[i];
+                    console.log("....", point.pointId)
                     // update both so we have data
                     myCanvas.lastPosById[point.pointId] = {
                         coordiantes: new CanvasTools.Point(point.x, point.y)
@@ -166,6 +210,14 @@ Rectangle {
                         myCanvas.posById[point.pointId] = {
                             coordiantes: new CanvasTools.Point(point.x, point.y)
                         }
+                    }
+
+                    myCanvas.rainbowColorIntervalCounter++;
+                    if (rainbowColorEnabled && (myCanvas.rainbowColorIntervalCounter % myCanvas.rainbowColorIntervalLength == 0)) {
+                        //myCanvas.rainbowColorIndex++;
+                        //myCanvas.rainbowColorIndex %= root.rainbowColors.length;
+                        myCanvas.rainbowColorIndex +=  myCanvas.rainbowColorIndexStep;
+                        myCanvas.rainbowColorIndex %= 360;
                     }
                     myCanvas.requestPaint()
                 }
