@@ -99,7 +99,6 @@ Rectangle {
                 pointPath = []
             }
 
-            var touchPointCounter = 0;
             for (var id in lastPosById) {
                 var currentColor = rainbowColorEnabled
                         ? ColorUtils.colorFromHue((rainbowColorIndex + ((parseInt(id, 10) % rainbowColorIndexStep) * (360 / rainbowColorIndexStep))) % 360)     //root.rainbowColors[(rainbowColorIndex + parseInt(id, 10)) % root.rainbowColors.length]
@@ -149,10 +148,11 @@ Rectangle {
                     endPoint = posById[id].coordiantes;
 
                     for (var i = 0; i < myCanvas.edges; i++) {
-                        ctx.beginPath()
-                        ctx.moveTo(startPoint.x, startPoint.y)
-                        ctx.lineTo(endPoint.x, endPoint.y)
-                        ctx.stroke()
+//                        ctx.beginPath()
+//                        ctx.moveTo(startPoint.x, startPoint.y)
+//                        ctx.lineTo(endPoint.x, endPoint.y)
+//                        ctx.stroke()
+                        _cppController.paintWithHistory(myCanvas, startPoint.x, startPoint.y, endPoint.x, endPoint.y, 5, currentColor);
 
                         startPoint.rotate(center, deltaAngle);
                         endPoint.rotate(center, deltaAngle);
@@ -205,7 +205,7 @@ Rectangle {
             onUpdated: {
                 if (!floodFillEnabled) {
                     for (var i = 0; i < touchPoints.length; ++i) {
-                        var point = touchPoints[i]
+                        var point = touchPoints[i];
                         // only update current pos, last update set on paint
                         myCanvas.posById[point.pointId] = {
                             coordiantes: new CanvasTools.Point(point.x, point.y)
@@ -225,7 +225,7 @@ Rectangle {
             onReleased: {
                 if (!floodFillEnabled) {
                     for (var i = 0; i < touchPoints.length; ++i) {
-                        var point = touchPoints[i]
+                        var point = touchPoints[i];
                         delete myCanvas.lastPosById[point.pointId]
                         delete myCanvas.posById[point.pointId]
                     }
