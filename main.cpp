@@ -8,6 +8,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include <QDebug>
+
 int main(int argc, char *argv[])
 {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -33,6 +35,8 @@ int main(int argc, char *argv[])
 	        QObject::disconnect(connection);
 }, Qt::QueuedConnection);
 
+	//engine.addImportPath("/home/basti/source/Painter/bin/debug/PainterCanvas");
+	qDebug() << engine.importPathList();
 	engine.load(mainQml);
 	CppController * cc = new CppController();
 	engine.rootContext()->setContextProperty("_cppController", cc);

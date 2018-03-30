@@ -3,6 +3,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
 
+import PainterCanvas 1.0
+
 import "controls"
 
 ApplicationWindow {
@@ -181,6 +183,13 @@ ApplicationWindow {
                             canvas.rainbowColorEnabled = checked
                         }
                     }
+
+                    PainterCanvas {
+                        width: 100
+                        height: 100
+                        name: "A simple pie chart"
+                        color: "red"
+                    }
                 }
             }
 
@@ -308,7 +317,7 @@ ApplicationWindow {
         id: stackView
         anchors.fill: parent
 
-        initialItem: PainterCanvas {
+        initialItem: PainterCanvasHtml {
             id: canvas
             anchors.fill: parent
         }
