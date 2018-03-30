@@ -1,6 +1,6 @@
 #include "cppcontroller.h"
 
-#include "floodfill.h"
+#include "imagemanipulation/floodfill.h"
 #include "commandhistorycontroller/paintercommands.h"
 
 #include <QQuickItem>
