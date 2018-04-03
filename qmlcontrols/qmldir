@@ -1,0 +1,9 @@
+module QmlControls
+#plugin paintercanvasplugin
+Button 1.0 Button.qml
+ColorCell 1.0 ColorCell.qml
+ColorPicker 1.0 ColorPicker.qml
+HUESlider 1.0 HUESlider.qml
+SBPicker 1.0 SBPicker.qml
+SwitchButton 1.0 SwitchButton.qml
+ColorUtils 1.0 qrc:/colorutils.js

@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
 	        QObject::disconnect(connection);
 }, Qt::QueuedConnection);
 
-	//engine.addImportPath("/home/basti/source/Painter/bin/debug/PainterCanvas");
 	qDebug() << engine.importPathList();
 	engine.load(mainQml);
 	CppController * cc = new CppController();

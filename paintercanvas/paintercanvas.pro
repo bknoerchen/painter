@@ -5,7 +5,7 @@ QT += qml quick
 TARGET = paintercanvasplugin
 
 SOURCES += \
-           paintercanvasplugin.cpp \
+    paintercanvasplugin.cpp \
     paintercanvas.cpp
 
 CONFIG(debug, debug|release) {
@@ -22,20 +22,13 @@ CONFIG(debug, debug|release) {
     UI_DIR =      ../bin/release/PainterCanvas/.ui
 }
 
-
-//TARGET = $$qtLibraryTarget(paintercanvasplugin)
-
-
 HEADERS += \
-           paintercanvasplugin.h \
+    paintercanvasplugin.h \
     paintercanvas.h
 
-
-DESTPATH=DESTDIR
-
-target.path=$$DESTPATH
-qmldir.files=$$PWD/qmldir
-qmldir.path=$$DESTPATH
+target.path = $$DESTDIR
+qmldir.files = $$PWD/qmldir
+qmldir.path = $$DESTDIR
 INSTALLS += target qmldir
 
 CONFIG += install_ok

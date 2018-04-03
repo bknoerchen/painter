@@ -1,3 +1,17 @@
+~/source/Painter/bin/debug(master)$ qmlplugindump PainterCanvas 1.0 ./ > paintercanvas.qmltypes
+
+qmltypes einbinden in qmldir
+
+plugins.qmlproject
+
+
+
+
+
+
+
+
+
 
 #include <QJSValueIterator>
 template<typename T> struct TD;

@@ -3,13 +3,6 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>point.js</file>
-        <file>qmlcontrols/Button.qml</file>
-        <file>qmlcontrols/ColorPicker.qml</file>
-        <file>qmlcontrols/SwitchButton.qml</file>
-        <file>qmlcontrols/ColorCell.qml</file>
-        <file>qmlcontrols/colorutils.js</file>
-        <file>qmlcontrols/HUESlider.qml</file>
-        <file>qmlcontrols/SBPicker.qml</file>
         <file>images/grip.png</file>
         <file>images/back.png</file>
         <file>images/back@2x.png</file>
