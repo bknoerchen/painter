@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qmlcontrols/Button.qml</file>
+        <file>qmlcontrols/ColorCell.qml</file>
+        <file>qmlcontrols/ColorPicker.qml</file>
+        <file>qmlcontrols/colorutils.js</file>
+        <file>qmlcontrols/HUESlider.qml</file>
+        <file>qmlcontrols/SBPicker.qml</file>
+        <file>qmlcontrols/SwitchButton.qml</file>
+    </qresource>
+</RCC>

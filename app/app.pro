@@ -37,7 +37,9 @@ SOURCES += \
     commandhistorycontroller/commandgroup.cpp \
     imagemanipulation/floodfill.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += \
+    qmlcontrols.qrc \
+    qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH += DESTDIR
@@ -65,6 +67,3 @@ DISTFILES += \
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 }
-
-DISTFILES += \
-    note.txt

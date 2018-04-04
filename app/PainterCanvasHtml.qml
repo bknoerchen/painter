@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 
 import "point.js" as CanvasTools
-import "controls/colorutils.js" as ColorUtils
+import "qmlcontrols/colorutils.js" as ColorUtils
 
 Rectangle {
     id: root
@@ -148,11 +148,11 @@ Rectangle {
                     endPoint = posById[id].coordiantes;
 
                     for (var i = 0; i < myCanvas.edges; i++) {
-//                        ctx.beginPath()
-//                        ctx.moveTo(startPoint.x, startPoint.y)
-//                        ctx.lineTo(endPoint.x, endPoint.y)
-//                        ctx.stroke()
-                        _cppController.paintWithHistory(myCanvas, startPoint.x, startPoint.y, endPoint.x, endPoint.y, 5, currentColor);
+                        ctx.beginPath()
+                        ctx.moveTo(startPoint.x, startPoint.y)
+                        ctx.lineTo(endPoint.x, endPoint.y)
+                        ctx.stroke()
+                        //_cppController.paintWithHistory(myCanvas, startPoint.x, startPoint.y, endPoint.x, endPoint.y, 5, currentColor);
 
                         startPoint.rotate(center, deltaAngle);
                         endPoint.rotate(center, deltaAngle);

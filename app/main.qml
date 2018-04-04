@@ -4,7 +4,8 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
 
 import PainterCanvas 1.0
-import QmlControls 1.0
+
+import "qrc:/qmlcontrols/"
 
 ApplicationWindow {
     id: mainWindow
