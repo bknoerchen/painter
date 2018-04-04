@@ -42,7 +42,9 @@ RESOURCES += \
     qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH += DESTDIR
+QML_IMPORT_PATH += \
+    $$DESTDIR
+
 QML_IMPORT_TRACE = 1
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
@@ -67,3 +69,6 @@ DISTFILES += \
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 }
+
+DISTFILES += \
+    note.txt

@@ -4,26 +4,28 @@
 
 class PainterCanvas : public QQuickPaintedItem
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    Q_PROPERTY(QString name READ name WRITE setName)
+	Q_PROPERTY(QPoint startPoint READ getStartPoint WRITE setStartPoint)
+	Q_PROPERTY(QPoint endPoint READ getEndPoint WRITE setEndPoint)
 	Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
-    PainterCanvas(QQuickItem *parent = 0);
-
-    QString name() const;
-    void setName(const QString &name);
-
+	PainterCanvas(QQuickItem *parent = 0);
 
 	QColor color() const;
 	void setColor(const QColor & color);
 
 	void paint(QPainter *painter);
 
+	void setStartPoint(const QPoint & getStartPoint);
+	void setEndPoint(const QPoint & getEndPoint);
+
+	QPoint getStartPoint() const;
+	QPoint getEndPoint() const;
+
 private:
-    QString m_name;
-	QColor m_color;
+	QPoint startPoint_;
+	QPoint endPoint_;
+	QColor color_;
 };
-
-

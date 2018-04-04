@@ -7,30 +7,41 @@ PainterCanvas::PainterCanvas(QQuickItem *parent)
 {
 }
 
-QString PainterCanvas::name() const
-{
-    return m_name;
-}
-
-void PainterCanvas::setName(const QString &name)
-{
-    m_name = name;
-}
-
 QColor PainterCanvas::color() const
 {
-	return m_color;
+	return color_;
 }
 
 void PainterCanvas::setColor(const QColor & color)
 {
-	m_color = color;
+	color_ = color;
 }
 
 void PainterCanvas::paint(QPainter * painter)
 {
-	QPen pen(m_color, 2);
+	QPen pen(color_, 2);
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
-	painter->drawPie(boundingRect().adjusted(1, 1, -1, -1), 90 * 16, 290 * 16);
+	painter->drawLine(startPoint_, endPoint_);
+}
+
+void PainterCanvas::setStartPoint(const QPoint & startPoint)
+{
+	startPoint_ = startPoint;
+}
+
+void PainterCanvas::setEndPoint(const QPoint & endPoint)
+{
+	endPoint_ = endPoint;
+	update();
+}
+
+QPoint PainterCanvas::getStartPoint() const
+{
+	return startPoint_;
+}
+
+QPoint PainterCanvas::getEndPoint() const
+{
+	return endPoint_;
 }

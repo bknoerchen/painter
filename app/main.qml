@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 
 import PainterCanvas 1.0
 
-import "qrc:/qmlcontrols/"
+import "qmlcontrols"
 
 ApplicationWindow {
     id: mainWindow
@@ -184,11 +184,30 @@ ApplicationWindow {
                         }
                     }
 
-                    PainterCanvas {
-                        width: 100
-                        height: 100
-                        name: "A simple pie chart"
-                        color: "red"
+                    Rectangle {
+                        width: 200
+                        height: 200
+
+                        border.width: 1;
+                        border.color: "red"
+
+
+                        PainterCanvas {
+                            id: painterCanvas
+                            anchors.fill: parent
+                            color: "red"
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onPressed: {
+                                painterCanvas.startPoint = Qt.point(mouseX, mouseY);
+                            }
+
+                            onReleased: {
+                                painterCanvas.endPoint = Qt.point(mouseX, mouseY);
+                            }
+                        }
                     }
                 }
             }
