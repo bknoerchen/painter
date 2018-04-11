@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = \
-    paintercanvas \
+    symmetriccanvas
 
 CONFIG += ordered
 SUBDIRS += app

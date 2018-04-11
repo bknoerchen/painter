@@ -3,8 +3,6 @@ import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
 
-import PainterCanvas 1.0
-
 import "qmlcontrols"
 
 ApplicationWindow {
@@ -16,7 +14,7 @@ ApplicationWindow {
     color: "black"
     visible: true
 
-    SymmetricCanvas {
+    MyCanvas {
         anchors.fill: parent
     }
 

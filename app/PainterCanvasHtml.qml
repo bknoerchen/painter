@@ -55,6 +55,7 @@ Rectangle {
 
         property var lastPosById
         property var posById
+        property var pointPath
 
         property int edges
 
@@ -95,6 +96,7 @@ Rectangle {
             if (lastPosById === undefined) {
                 lastPosById = {}
                 posById = {}
+                pointPath = []
             }
 
             for (var id in lastPosById) {

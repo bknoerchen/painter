@@ -1,11 +1,11 @@
 import QtQuick 2.0
 
-import PainterCanvas 1.0
+import SymmetricCanvas 1.0
 
 import "point.js" as JsCanvas
 
 Item {
-    PainterCanvas {
+    SymmetricCanvas {
         id: myCanvas
 
         anchors.fill: parent
@@ -17,12 +17,17 @@ Item {
 
         color: "green"
 
-//        onPaint: {
-//            if (lastPosById === undefined) {
-//                lastPosById = {}
-//                posById = {}
-//            }
-//        }
+        onPaint: {
+            var startPoint;
+            var endPoint;
+
+            for (var id in lastPosById) {
+                startPoint = lastPosById[id].coordiantes;
+                endPoint = posById[id].coordiantes;
+
+                drawShape(startPoint, endPoint);
+            }
+        }
     }
 
     MultiPointTouchArea {
@@ -46,7 +51,7 @@ Item {
                 myCanvas.posById[point.pointId] = {
                     coordiantes: new JsCanvas.Point(point.x, point.y)
                 }
-                //myCanvas.requestPaint()
+                myCanvas.paint();
             }
         }
         onReleased: {

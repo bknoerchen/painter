@@ -2,7 +2,7 @@
 
 #include <QQmlExtensionPlugin>
 
-class PainterCanvasPlugin : public QQmlExtensionPlugin
+class SymmetricCanvasPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)

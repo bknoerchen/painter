@@ -23,19 +23,11 @@ CONFIG(debug, debug|release) {
 DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
-    cppcontroller.h \
-    commandhistorycontroller/command.h \
-    commandhistorycontroller/commandgroup.h \
-    commandhistorycontroller/history.h \
-    commandhistorycontroller/paintercommands.h \
-    imagemanipulation/floodfill.h
+    cppcontroller.h
 
 SOURCES += \
     main.cpp \
-    cppcontroller.cpp \
-    commandhistorycontroller/history.cpp \
-    commandhistorycontroller/commandgroup.cpp \
-    imagemanipulation/floodfill.cpp
+    cppcontroller.cpp
 
 RESOURCES += \
     qmlcontrols.qrc \
