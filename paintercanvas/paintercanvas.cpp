@@ -22,7 +22,7 @@ void PainterCanvas::paint(QPainter * painter)
 	QPen pen(color_, 2);
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
-	painter->drawLine(startPoint_, endPoint_);
+	painter->drawLine(QPoint(1,1), QPoint(30,30));
 }
 
 void PainterCanvas::setStartPoint(const QPoint & startPoint)

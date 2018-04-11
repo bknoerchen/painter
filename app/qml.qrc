@@ -18,5 +18,6 @@
         <file>images/menu@4x.png</file>
         <file>PainterCanvasHtml.qml</file>
         <file>images/icon.png</file>
+        <file>SymmetricCanvas.qml</file>
     </qresource>
 </RCC>
