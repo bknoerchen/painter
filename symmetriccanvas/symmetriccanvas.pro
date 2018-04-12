@@ -5,22 +5,25 @@ QT += qml quick
 TARGET = symmetriccanvasplugin
 
 HEADERS += \
-    shape.h \
+    shapes/shape.h \
     commandhistorycontroller/command.h \
     commandhistorycontroller/commandgroup.h \
     commandhistorycontroller/history.h \
     commandhistorycontroller/paintercommands.h \
     imagemanipulation/floodfill.h \
     symmetriccanvas.h \
-    symmetriccanvasplugin.h
+    symmetriccanvasplugin.h \
+    shapes/polyline.h \
+    shapes/shapefactory.h
 
 SOURCES += \
-    shape.cpp \
+    shapes/shape.cpp \
     commandhistorycontroller/commandgroup.cpp \
     commandhistorycontroller/history.cpp \
     imagemanipulation/floodfill.cpp \
     symmetriccanvas.cpp \
-    symmetriccanvasplugin.cpp
+    symmetriccanvasplugin.cpp \
+    shapes/polyline.cpp
 
 CONFIG(debug, debug|release) {
     DESTDIR =     ../bin/debug/SymmetricCanvas

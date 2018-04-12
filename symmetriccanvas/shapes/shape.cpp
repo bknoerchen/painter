@@ -17,11 +17,15 @@ void Shape::draw(QPainter & painter)
 
 	painter.setPen(QPen(penColor, penWidth, Qt::SolidLine,
 	                    Qt::RoundCap, Qt::RoundJoin));
+	painter.setRenderHints(QPainter::Antialiasing, true);
+
 	drawImpl(painter);
+
+	painter.setRenderHints(QPainter::Antialiasing, false);
 	painter.setPen(prevPen);
 }
 
-QRect Shape::getBoundingRect() const
+QRectF Shape::getBoundingRect() const
 {
 	// Consider pen's width and make sure the outline is included in the
 	// returned rectangle.
@@ -29,31 +33,7 @@ QRect Shape::getBoundingRect() const
 	return getBoundingRectImpl().adjusted(-rad, -rad, +rad, +rad);
 }
 
-void Shape::update(const QPoint & toPoint)
+void Shape::update(const QPointF & toPoint)
 {
 	updateImpl(toPoint);
-}
-
-
-Polyline::Polyline(const QPoint &topLeft,
-                   int penWidth,
-                   const QColor &penColor) :
-    Shape(penWidth, penColor)
-{
-	update(topLeft);
-}
-
-void Polyline::drawImpl(QPainter &painter)
-{
-	painter.drawPolyline(poly);
-}
-
-QRect Polyline::getBoundingRectImpl() const
-{
-	return poly.boundingRect();
-}
-
-void Polyline::updateImpl(const QPoint &toPoint)
-{
-	poly << toPoint;
 }

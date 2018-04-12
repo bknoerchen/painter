@@ -2,8 +2,6 @@ import QtQuick 2.0
 
 import SymmetricCanvas 1.0
 
-import "point.js" as JsCanvas
-
 Item {
     SymmetricCanvas {
         id: myCanvas
@@ -15,17 +13,25 @@ Item {
         property var lastPosById : ({})
         property var posById : ({})
 
-        color: "green"
+        color: "white"
+        penWidth: 5
 
         onPaint: {
             var startPoint;
             var endPoint;
 
             for (var id in lastPosById) {
-                startPoint = lastPosById[id].coordiantes;
-                endPoint = posById[id].coordiantes;
+                startPoint = lastPosById[id];
+                endPoint = posById[id];
 
-                drawShape(startPoint, endPoint);
+                console.log("startPoint", startPoint.x, startPoint.y);
+                console.log("endPoint", endPoint.x, endPoint.y);
+
+                drawShape(Qt.point(startPoint.x, startPoint.y), Qt.point(endPoint.x, endPoint.y));
+
+                // update lastpos
+                lastPosById[id].x = posById[id].x;
+                lastPosById[id].y = posById[id].y;
             }
         }
     }
@@ -37,10 +43,12 @@ Item {
             for (var i = 0; i < touchPoints.length; ++i) {
                 var point = touchPoints[i];
                 myCanvas.lastPosById[point.pointId] = {
-                    coordiantes: new JsCanvas.Point(point.x, point.y)
+                    x: point.x,
+                    y: point.y
                 }
                 myCanvas.posById[point.pointId] = {
-                    coordiantes: new JsCanvas.Point(point.x, point.y)
+                    x: point.x,
+                    y: point.y
                 }
             }
         }
@@ -49,7 +57,8 @@ Item {
                 var point = touchPoints[i];
                 // only update current pos, last update set on paint
                 myCanvas.posById[point.pointId] = {
-                    coordiantes: new JsCanvas.Point(point.x, point.y)
+                    x: point.x,
+                    y: point.y
                 }
                 myCanvas.paint();
             }
