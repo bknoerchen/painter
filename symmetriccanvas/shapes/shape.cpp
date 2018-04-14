@@ -2,8 +2,9 @@
 
 #include <QPen>
 
-Shape::Shape(int penWidth, const QColor & penColor) :
-    penWidth(penWidth), penColor(penColor)
+Shape::Shape(int penWidth, const QColor & penColor)
+    : penWidth(penWidth)
+    , penColor(penColor)
 {
 }
 
@@ -13,16 +14,15 @@ Shape::~Shape()
 
 void Shape::draw(QPainter & painter)
 {
-	const QPen prevPen = painter.pen();
+	painter.save();
 
 	painter.setPen(QPen(penColor, penWidth, Qt::SolidLine,
-	                    Qt::RoundCap, Qt::RoundJoin));
+	                    Qt::RoundCap, Qt::SvgMiterJoin));
 	painter.setRenderHints(QPainter::Antialiasing, true);
 
 	drawImpl(painter);
 
-	painter.setRenderHints(QPainter::Antialiasing, false);
-	painter.setPen(prevPen);
+	painter.restore();
 }
 
 QRectF Shape::getBoundingRect() const
@@ -31,9 +31,4 @@ QRectF Shape::getBoundingRect() const
 	// returned rectangle.
 	const int rad = penWidth / 2 + 2;
 	return getBoundingRectImpl().adjusted(-rad, -rad, +rad, +rad);
-}
-
-void Shape::update(const QPointF & toPoint)
-{
-	updateImpl(toPoint);
 }

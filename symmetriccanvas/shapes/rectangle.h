@@ -2,10 +2,10 @@
 
 #include "shape.h"
 
-class Polyline : public Shape
+class Rectangle : public Shape
 {
 public:
-	explicit Polyline(const QPointF & startPoint,
+	explicit Rectangle(const QPointF & startPoint,
 	                  int penWidth,
 	                  const QColor & penColor);
 	virtual void update(const QPointF & currentPoint) override;
@@ -15,5 +15,6 @@ protected:
 	virtual QRectF getBoundingRectImpl() const override;
 
 private:
-	QPolygonF polylinePoints_;
+	QPointF startPoint_;
+	QPointF endPoint_;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "command.h"
-#include "shape.h"
+#include "../shapes/shape.h"
 
 #include <QColor>
 #include <QQmlContext>
@@ -23,10 +23,10 @@ protected:
 };
 
 #include <QDebug>
-class PaintStrokeCommand : public PaintCommandBase
+class PolylineCommand : public PaintCommandBase
 {
 public:
-	explicit PaintStrokeCommand( QImage * canvasImage, std::unique_ptr<Shape> && shape)
+	explicit PolylineCommand(QImage * canvasImage, std::unique_ptr<Shape> && shape)
 	    : canvasImage_(canvasImage)
 	    , undoImage_(canvasImage->copy(s->rect())), shape_(std::move(shape))
 	{

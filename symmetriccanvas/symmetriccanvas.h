@@ -1,12 +1,11 @@
 #pragma once
 
 #include "commandhistorycontroller/history.h"
-#include "shapes/shape.h"
+#include "shapes/shapefactory.h"
 
 #include <QImage>
 #include <QQuickPaintedItem>
 
-#include <functional>
 #include <memory>
 
 class SymmetricCanvas : public QQuickPaintedItem
@@ -15,20 +14,28 @@ class SymmetricCanvas : public QQuickPaintedItem
 
 	Q_PROPERTY(QColor color READ color WRITE setColor)
 	Q_PROPERTY(int penWidth READ penWidth WRITE setPenWidth)
-
-	typedef std::function<std::unique_ptr<Shape>(
-	        const QPointF &, int, const QColor &)> ShapeFactory;
+	Q_PROPERTY(QString currentShape READ currentShape WRITE setCurrentShape)
 
 public:
 	SymmetricCanvas(QQuickItem *parent = 0);
 
+	// properties
 	QColor color() const;
 	void setColor(const QColor & color);
 
 	int penWidth() const;
 	void setPenWidth(int penWidth);
 
-	Q_INVOKABLE void drawShape(const QPointF & startPoint, const QPointF & endPoint);
+	QString currentShape() const;
+	void setCurrentShape(const QString & shapeName);
+
+	// invokable functions
+	Q_INVOKABLE void redo();
+	Q_INVOKABLE void undo();
+
+	Q_INVOKABLE void startPaint(const QPointF & startPoint, int id);
+	Q_INVOKABLE void updatePaint(const QPointF & currentPoint, int id);
+	Q_INVOKABLE void stopPaint(int id);
 
 protected:
 	void paint(QPainter *painter) override;
@@ -39,6 +46,8 @@ private:
 	int penWidth_;
 	QImage canvasImage_;
 	History paintHistory_;
-	ShapeFactory shapeFactory_;
-	//std::unique_ptr<Shape> currentShape_;
+
+	QString currentShapeName_;
+	ShapeFactoryFunction currentShapeFactory_;
+	std::map<int /*touchId*/, std::unique_ptr<Shape>> currentShapes_;
 };

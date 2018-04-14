@@ -8,18 +8,9 @@ Item {
 
         anchors.fill: parent
 
-        property var lastPointById : ({})
-
         color: "white"
-        penWidth: 5
-
-        function paint(x, y, id) {
-            drawShape(Qt.point(lastPointById[id].x, lastPointById[id].y), Qt.point(x, y));
-
-            // update last point with coordinates of current point
-            lastPointById[id].x = x;
-            lastPointById[id].y = y;
-        }
+        penWidth: 3
+        currentShape: "Rectangle" // "Polyline"
     }
 
     MultiPointTouchArea {
@@ -30,25 +21,21 @@ Item {
         onPressed: {
             for (var i = 0; i < touchPoints.length; ++i) {
                 var point = touchPoints[i];
-
-                myCanvas.lastPointById[point.pointId] = {
-                    x: point.x,
-                    y: point.y
-                }
+                myCanvas.startPaint(Qt.point(point.x, point.y), point.pointId);
             }
         }
 
         onUpdated: {
             for (var i = 0; i < touchPoints.length; ++i) {
                 var point = touchPoints[i];
-                myCanvas.paint(point.x, point.y, point.pointId);
+                myCanvas.updatePaint(Qt.point(point.x, point.y), point.pointId);
             }
         }
 
         onReleased: {
             for (var i = 0; i < touchPoints.length; ++i) {
                 var point = touchPoints[i];
-                delete myCanvas.lastPointById[point.pointId]
+                myCanvas.stopPaint(point.pointId);
             }
         }
     }

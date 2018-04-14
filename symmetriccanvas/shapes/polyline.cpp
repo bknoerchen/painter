@@ -1,24 +1,24 @@
 #include "polyline.h"
 
-Polyline::Polyline(const QPointF & topLeft,
+Polyline::Polyline(const QPointF & startPoint,
                    int penWidth,
-                   const QColor & penColor) :
-    Shape(penWidth, penColor)
+                   const QColor & penColor)
+    : Shape(penWidth, penColor)
 {
-	update(topLeft);
+	polylinePoints_ << startPoint;
+}
+
+void Polyline::update(const QPointF & currentPoint)
+{
+	polylinePoints_ << currentPoint;
 }
 
 void Polyline::drawImpl(QPainter & painter)
 {
-	painter.drawPolyline(poly);
+	painter.drawPolyline(polylinePoints_);
 }
 
 QRectF Polyline::getBoundingRectImpl() const
 {
-	return poly.boundingRect();
-}
-
-void Polyline::updateImpl(const QPointF & toPoint)
-{
-	poly << toPoint;
+	return polylinePoints_.boundingRect();
 }

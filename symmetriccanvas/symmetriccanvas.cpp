@@ -1,28 +1,13 @@
 #include "symmetriccanvas.h"
 
-#include "shapes/shapefactory.h"
-
 #include <QPainter>
 
 SymmetricCanvas::SymmetricCanvas(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , penWidth_(2)
     , canvasImage_(10, 10, QImage::Format_RGB32)
-    , shapeFactory_(ShapeFactoryProducts::createPolyline)
-//    , currentShape_(shapeFactory_())
+    , currentShapeFactory_(0)
 {
-	canvasImage_.fill(Qt::red);
-
-	//qDebug() << property("width").toInt() << property("height").toInt();
-
-
-	QPen pen(color_, 2);
-	QPainter painter(&canvasImage_);
-	painter.setPen(pen);
-	painter.setRenderHints(QPainter::Antialiasing, true);
-	painter.drawLine(QPoint(1,1), QPoint(30,30));
-
-	    painter.drawPolyline(QPolygonF() << QPoint(1,1) << QPoint(30,30));
 }
 
 QColor SymmetricCanvas::color() const
@@ -45,9 +30,23 @@ void SymmetricCanvas::setPenWidth(int penWidth)
 	penWidth_ = penWidth;
 }
 
+QString SymmetricCanvas::currentShape() const
+{
+	return currentShapeName_;
+}
+
+void SymmetricCanvas::setCurrentShape(const QString & shapeName)
+{
+	currentShapeName_ = shapeName;
+	currentShapeFactory_ = ShapeFactory::getShapeFactoryForProductName(currentShapeName_);
+}
+
 void SymmetricCanvas::paint(QPainter * painter)
 {
 	painter->drawImage(QPoint(0, 0), canvasImage_);
+	for (auto & shape : currentShapes_) {
+		shape.second->draw(*painter);
+	}
 }
 
 void SymmetricCanvas::geometryChanged(const QRectF & newGeometry, const QRectF & oldGeometry)
@@ -63,17 +62,25 @@ void SymmetricCanvas::geometryChanged(const QRectF & newGeometry, const QRectF &
 	}
 }
 
-void SymmetricCanvas::drawShape(const QPointF & startPoint, const QPointF & endPoint)
+void SymmetricCanvas::startPaint(const QPointF & startPoint, int id)
 {
-	QPainter painter(&canvasImage_);
-	auto shape = shapeFactory_(startPoint, penWidth_, color_);
-	shape->update(endPoint);
-	shape->draw(painter);
+	currentShapes_[id] = currentShapeFactory_(startPoint, penWidth_, color_);
+}
 
-	// update rect ????
+void SymmetricCanvas::updatePaint(const QPointF & currentPoint, int id)
+{
+	currentShapes_[id]->update(currentPoint);
 	update();
 }
 
+void SymmetricCanvas::stopPaint(int id)
+{
+	QPainter canvasPainter(&canvasImage_);
+	currentShapes_[id]->draw(canvasPainter);
+
+	currentShapes_.erase(currentShapes_.find(id));
+	update();
+}
 
 //void Document::mousePressEvent(QMouseEvent *event)
 //{

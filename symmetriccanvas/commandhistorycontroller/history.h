@@ -5,6 +5,7 @@
 class Command;
 
 class History {
+
 public:
 	History();
 	~History();
@@ -12,7 +13,7 @@ public:
 	void clear();
 	void save();
 	bool modified();
-	void limit(int numCommands);
+	void limit(int maxCommands);
 	void add(Command * command, bool execute);
 	void revert();
 	void undo();

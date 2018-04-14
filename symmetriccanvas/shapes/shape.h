@@ -7,17 +7,15 @@ class Shape
 {
 public:
 	Shape(int penWidth, const QColor & penColor);
-
 	virtual ~Shape();
 
 	void draw(QPainter & painter);
 	QRectF getBoundingRect() const;
-	void update(const QPointF & toPoint);
+	virtual void update(const QPointF & currentPoint) = 0;
 
 protected:
-	virtual void drawImpl(QPainter &painter) = 0;
+	virtual void drawImpl(QPainter & painter) = 0;
 	virtual QRectF getBoundingRectImpl() const = 0;
-	virtual void updateImpl(const QPointF &toPoint) = 0;
 
 private:
 	int penWidth;

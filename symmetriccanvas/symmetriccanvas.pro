@@ -14,7 +14,8 @@ HEADERS += \
     symmetriccanvas.h \
     symmetriccanvasplugin.h \
     shapes/polyline.h \
-    shapes/shapefactory.h
+    shapes/shapefactory.h \
+    shapes/rectangle.h
 
 SOURCES += \
     shapes/shape.cpp \
@@ -23,7 +24,9 @@ SOURCES += \
     imagemanipulation/floodfill.cpp \
     symmetriccanvas.cpp \
     symmetriccanvasplugin.cpp \
-    shapes/polyline.cpp
+    shapes/polyline.cpp \
+    shapes/shapefactory.cpp \
+    shapes/rectangle.cpp
 
 CONFIG(debug, debug|release) {
     DESTDIR =     ../bin/debug/SymmetricCanvas
