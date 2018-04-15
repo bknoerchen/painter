@@ -43,6 +43,13 @@ void SymmetricCanvas::setCurrentShape(const QString & shapeName)
 	currentShapeFactory_ = ShapeFactory::getShapeFactoryForProductName(currentShapeName_);
 }
 
+void SymmetricCanvas::redo()
+{
+	paintHistory_.redo();
+
+	update();
+}
+
 void SymmetricCanvas::undo()
 {
 	paintHistory_.undoWithCachedData();
