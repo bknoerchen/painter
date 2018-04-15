@@ -12,8 +12,12 @@
 class PaintCommandBase : public Command
 {
 public:
-	PaintCommandBase(QImage * canvasImage)
-	    : canvasImage_(canvasImage) {
+	PaintCommandBase(QImage * canvasImage, std::unique_ptr<Shape> && shape, int commandStackSize)
+	    : canvasImage_(canvasImage)
+	    , undoImage_((commandStackSize % MAX_REDRAW_STEPS == 0) ? *canvasImage : QImage()) // only save the canvas every MAX_REDRAW_STEPS steps
+	    //std::move(canvasImage->copy(shape->getBoundingRect().toAlignedRect())))
+	    , shape_(std::move(shape))
+	{
 	}
 
 protected:
@@ -23,31 +27,33 @@ protected:
 };
 
 #include <QDebug>
-class PolylineCommand : public PaintCommandBase
+class ShapeCommand : public PaintCommandBase
 {
 public:
-	explicit PolylineCommand(QImage * canvasImage, std::unique_ptr<Shape> && shape)
-	    : canvasImage_(canvasImage)
-	    , undoImage_(canvasImage->copy(s->rect())), shape_(std::move(shape))
+	explicit ShapeCommand(QImage * canvasImage, std::unique_ptr<Shape> && shape, int commandStackSize)
+	    : PaintCommandBase(canvasImage, std::move(shape), commandStackSize)
 	{
 	}
 
 	virtual void undo() override
 	{
-		const QRect rect = shape_->getBoundingRect();
+//		const QRect rect = shape_->getBoundingRect();
 
-		QPainter painter(canvasImage_);
-		painter.drawImage(rect, undoImage);
+//		QPainter painter(canvasImage_);
+//		painter.drawImage(rect, undoImage);
 
-		canvas_->update(rect);
+//		canvas_->update(rect);
 	}
 
 	virtual void execute() override
 	{
 		QPainter painter(canvasImage_);
-		painter.setRenderHint(QPainter::Antialiasing, true);
 		shape_->draw(painter);
-
-		canvas_->update(shape->rect());
 	}
-}
+
+	virtual void revert() override
+	{
+		QPainter painter(canvasImage_);
+		painter.drawImage(QPoint(0, 0), undoImage_);
+	}
+};

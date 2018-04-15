@@ -1,5 +1,7 @@
 #include "symmetriccanvas.h"
 
+#include "commandhistorycontroller/paintercommands.h"
+
 #include <QPainter>
 
 SymmetricCanvas::SymmetricCanvas(QQuickItem *parent)
@@ -41,9 +43,18 @@ void SymmetricCanvas::setCurrentShape(const QString & shapeName)
 	currentShapeFactory_ = ShapeFactory::getShapeFactoryForProductName(currentShapeName_);
 }
 
+void SymmetricCanvas::undo()
+{
+	paintHistory_.undoWithCachedData();
+
+	update();
+}
+
 void SymmetricCanvas::paint(QPainter * painter)
 {
 	painter->drawImage(QPoint(0, 0), canvasImage_);
+
+	// draw current overlay shapes temporarily while mouse is pressed
 	for (auto & shape : currentShapes_) {
 		shape.second->draw(*painter);
 	}
@@ -75,11 +86,11 @@ void SymmetricCanvas::updatePaint(const QPointF & currentPoint, int id)
 
 void SymmetricCanvas::stopPaint(int id)
 {
-	QPainter canvasPainter(&canvasImage_);
-	currentShapes_[id]->draw(canvasPainter);
-
-	currentShapes_.erase(currentShapes_.find(id));
-	update();
+	if (currentShapes_.find(id) != currentShapes_.end()) {
+		paintHistory_.add(new ShapeCommand(&canvasImage_, std::move(currentShapes_.at(id)), paintHistory_.getNextExecutionNumber()), true);
+		currentShapes_.erase(id);
+		update();
+	}
 }
 
 //void Document::mousePressEvent(QMouseEvent *event)

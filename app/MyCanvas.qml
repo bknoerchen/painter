@@ -6,27 +6,50 @@ import SymmetricCanvas 1.0
 Item {
     anchors.fill: parent
 
-    ComboBox {
-        id: shapeSelector
+    Component.onCompleted: {
+        shapeSelector.currentIndex = 0;
+    }
 
-        anchors.top: parent.top
-        width: 200
-        height: 20
+    Row {
+        id: controls
 
-        currentIndex: 0
-        model: ListModel {
-            id: cbItems
-            ListElement { text: "Polyline"; shape: "Polyline" }
-            ListElement { text: "Rectangle"; shape: "Rectangle" }
+        ComboBox {
+            id: shapeSelector
+
+            anchors.top: parent.top
+            width: 200
+            height: 20
+
+            model: ListModel {
+                id: cbItems
+                ListElement { text: "Polyline"; shape: "Polyline" }
+                ListElement { text: "Rectangle"; shape: "Rectangle" }
+            }
+            onCurrentIndexChanged: {
+                myCanvas.currentShape = cbItems.get(currentIndex).shape;
+            }
         }
-        onCurrentIndexChanged: {
-            myCanvas.currentShape = cbItems.get(currentIndex).shape;
+
+        Button {
+            text: "Undo"
+            onClicked: {
+                myCanvas.undo();
+            }
         }
+
+        Button {
+            text: "Redo"
+
+            onClicked: {
+                myCanvas.redo();
+            }
+        }
+
     }
 
     Item {
         anchors {
-            top: shapeSelector.bottom
+            top: controls.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
@@ -39,7 +62,6 @@ Item {
 
             color: "white"
             penWidth: 3
-            currentShape: cbItems.get(cbItems.currentIndex).shape
         }
 
         MultiPointTouchArea {

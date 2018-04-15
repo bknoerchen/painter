@@ -10,12 +10,14 @@ public:
 	History();
 	~History();
 
+	int getNextExecutionNumber();
 	void clear();
 	void save();
 	bool modified();
 	void limit(int maxCommands);
 	void add(Command * command, bool execute);
 	void revert();
+	void undoWithCachedData();
 	void undo();
 	void redo();
 

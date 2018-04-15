@@ -4,6 +4,8 @@ QT += qml quick
 
 TARGET = symmetriccanvasplugin
 
+DEFINES += MAX_REDRAW_STEPS=10
+
 HEADERS += \
     shapes/shape.h \
     commandhistorycontroller/command.h \

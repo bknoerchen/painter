@@ -15,6 +15,11 @@ History::~History()
 	}
 }
 
+int History::getNextExecutionNumber()
+{
+	return lastExecuted_ + 1;
+}
+
 void History::clear()
 {
 	for (auto command : history_) {
@@ -78,6 +83,30 @@ void History::revert()
 	while (lastExecuted_ > 0) {
 		history_.value(lastExecuted_)->undo();
 		lastExecuted_--;
+	}
+}
+
+void History::undoWithCachedData()
+{
+	// if there is no last executed command -> return
+	if (lastExecuted_ < 0) return;
+
+	const int lastExecutedBefore = lastExecuted_;
+
+	const int commandCountTillLastFullBackup = (lastExecuted_) % MAX_REDRAW_STEPS;
+	const int lastCommandWithFullBackUp = (lastExecuted_) - commandCountTillLastFullBackup;
+
+	// revert visualy to step before "lastCommandWithFullBackUp"
+	history_.at(lastCommandWithFullBackUp)->revert();
+
+	// so the last realy exectued step is one before "lastCommandWithFullBackUp"
+	lastExecuted_ = lastCommandWithFullBackUp - 1;
+
+	// now redo all missings steps before the originally last executed step,
+	// which is the one we want to undo
+	while (lastExecuted_ + 1 < qMin(lastExecutedBefore, history_.size())) {
+		history_.value(lastExecuted_ + 1)->execute();
+		lastExecuted_++;
 	}
 }
 
