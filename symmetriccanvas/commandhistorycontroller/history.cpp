@@ -70,12 +70,16 @@ void History::add(Command * command, bool execute)
 		lastSaved_ = -1;
 	}
 
-	if ( execute ) {
-		command->execute();
-	}
-
 	history_.push_back(command);
 	lastExecuted_ = history_.size() - 1;
+
+	if (lastExecuted_ % MAX_SINGLE_UNDO_STEPS == 0) {
+		command->setUndoPoint();
+	}
+
+	if (execute) {
+		command->execute();
+	}
 }
 
 void History::revert()
@@ -92,15 +96,13 @@ void History::undoWithCachedData()
 	if (lastExecuted_ < 0) return;
 
 	const int lastExecutedBefore = lastExecuted_;
-
-	const int commandCountTillLastFullBackup = (lastExecuted_) % MAX_REDRAW_STEPS;
-	const int lastCommandWithFullBackUp = (lastExecuted_) - commandCountTillLastFullBackup;
+	const int lastExecutedIncludingUndoPoint = (lastExecuted_ / MAX_SINGLE_UNDO_STEPS) * MAX_SINGLE_UNDO_STEPS;
 
 	// revert visualy to step before "lastCommandWithFullBackUp"
-	history_.at(lastCommandWithFullBackUp)->revert();
+	history_.at(lastExecutedIncludingUndoPoint)->restoreUndoPoint();
 
 	// so the last realy exectued step is one before "lastCommandWithFullBackUp"
-	lastExecuted_ = lastCommandWithFullBackUp - 1;
+	lastExecuted_ = lastExecutedIncludingUndoPoint - 1;
 
 	// now redo all missings steps before the originally last executed step,
 	// which is the one we want to undo

@@ -7,5 +7,6 @@ public:
 
 	virtual void execute() = 0;
 	virtual void undo() = 0;
-	virtual void revert() = 0;
+	virtual void setUndoPoint() = 0;
+	virtual void restoreUndoPoint() = 0;
 };

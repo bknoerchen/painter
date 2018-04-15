@@ -4,7 +4,7 @@ QT += qml quick
 
 TARGET = symmetriccanvasplugin
 
-DEFINES += MAX_REDRAW_STEPS=10
+DEFINES += MAX_SINGLE_UNDO_STEPS=10
 
 HEADERS += \
     shapes/shape.h \

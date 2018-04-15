@@ -12,12 +12,15 @@
 class PaintCommandBase : public Command
 {
 public:
-	PaintCommandBase(QImage * canvasImage, std::unique_ptr<Shape> && shape, int commandStackSize)
+	PaintCommandBase(QImage * canvasImage, std::unique_ptr<Shape> && shape)
 	    : canvasImage_(canvasImage)
-	    , undoImage_((commandStackSize % MAX_REDRAW_STEPS == 0) ? *canvasImage : QImage()) // only save the canvas every MAX_REDRAW_STEPS steps
 	    //std::move(canvasImage->copy(shape->getBoundingRect().toAlignedRect())))
 	    , shape_(std::move(shape))
 	{
+	}
+
+	void setUndoPoint() {
+		undoImage_ = *canvasImage_;
 	}
 
 protected:
@@ -30,8 +33,8 @@ protected:
 class ShapeCommand : public PaintCommandBase
 {
 public:
-	explicit ShapeCommand(QImage * canvasImage, std::unique_ptr<Shape> && shape, int commandStackSize)
-	    : PaintCommandBase(canvasImage, std::move(shape), commandStackSize)
+	explicit ShapeCommand(QImage * canvasImage, std::unique_ptr<Shape> && shape)
+	    : PaintCommandBase(canvasImage, std::move(shape))
 	{
 	}
 
@@ -51,7 +54,7 @@ public:
 		shape_->draw(painter);
 	}
 
-	virtual void revert() override
+	virtual void restoreUndoPoint() override
 	{
 		QPainter painter(canvasImage_);
 		painter.drawImage(QPoint(0, 0), undoImage_);

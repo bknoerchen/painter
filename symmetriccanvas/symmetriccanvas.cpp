@@ -87,7 +87,7 @@ void SymmetricCanvas::updatePaint(const QPointF & currentPoint, int id)
 void SymmetricCanvas::stopPaint(int id)
 {
 	if (currentShapes_.find(id) != currentShapes_.end()) {
-		paintHistory_.add(new ShapeCommand(&canvasImage_, std::move(currentShapes_.at(id)), paintHistory_.getNextExecutionNumber()), true);
+		paintHistory_.add(new ShapeCommand(&canvasImage_, std::move(currentShapes_.at(id))), true);
 		currentShapes_.erase(id);
 		update();
 	}
