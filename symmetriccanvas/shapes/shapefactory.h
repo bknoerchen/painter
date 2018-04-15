@@ -18,7 +18,8 @@ public:
 	enum Type {
 		None = -1,
 		Polyline,
-		Rectangle
+		Rectangle,
+		Ellipse,
 	};
 
 	ShapeType(const Type & shapeType = None) : shapeType_(shapeType) {}
@@ -48,6 +49,8 @@ public:
 	static std::unique_ptr<Shape> createPolyline(const QPointF & startPoint, int penWidth,
 	                                             const QColor & penColor);
 	static std::unique_ptr<Shape> createRectangle(const QPointF & startPoint, int penWidth,
+	                                              const QColor & penColor);
+	static std::unique_ptr<Shape> createEllipse(const QPointF & startPoint, int penWidth,
 	                                              const QColor & penColor);
 private:
 	static const std::map<ShapeType, ShapeFactoryFunction> shapeFactoryProducts_;

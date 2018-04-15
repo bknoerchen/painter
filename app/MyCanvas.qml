@@ -22,8 +22,9 @@ Item {
 
             model: ListModel {
                 id: cbItems
-                ListElement { text: "Polyline"; shape: "Polyline" }
+                ListElement { text: "Polyline";  shape: "Polyline" }
                 ListElement { text: "Rectangle"; shape: "Rectangle" }
+                ListElement { text: "Ellipse";   shape: "Ellipse" }
             }
             onCurrentIndexChanged: {
                 myCanvas.currentShape = cbItems.get(currentIndex).shape;
