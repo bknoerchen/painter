@@ -46,12 +46,11 @@ private:
 class ShapeFactory {
 public:
 	static ShapeFactoryFunction getShapeFactoryForProductName(const QString & shapeFactoryProduct);
-	static std::unique_ptr<Shape> createPolyline(const QPointF & startPoint, int penWidth,
-	                                             const QColor & penColor);
-	static std::unique_ptr<Shape> createRectangle(const QPointF & startPoint, int penWidth,
-	                                              const QColor & penColor);
-	static std::unique_ptr<Shape> createEllipse(const QPointF & startPoint, int penWidth,
-	                                              const QColor & penColor);
+
+	template <typename ShapeType>
+	static std::unique_ptr<Shape> create(const QPointF & startPoint, int penWidth,
+	                                     const QColor & penColor);
+
 private:
-	static const std::map<ShapeType, ShapeFactoryFunction> shapeFactoryProducts_;
+	static const std::map<ShapeType, ShapeFactoryFunction> shapeFactoryRegistration_;
 };
