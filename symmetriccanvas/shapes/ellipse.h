@@ -8,6 +8,7 @@ public:
 	explicit Ellipse(const QPointF & startPoint,
 	                 int penWidth_,
 	                 int symmetryCount,
+	                 const ShapeMirrorType & mirrorType,
 	                 const QColor & penColor_);
 	virtual void update(const QPointF & currentPoint) override;
 

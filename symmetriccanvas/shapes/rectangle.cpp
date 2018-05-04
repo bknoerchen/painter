@@ -3,9 +3,10 @@
 Rectangle::Rectangle(const QPointF & startPoint,
                      int penWidth,
                      int symmetryCount,
+                     const ShapeMirrorType & mirrorType,
                      const QColor & penColor)
-    : Shape(penWidth, symmetryCount, penColor)
-    , startPoint_(startPoint)
+    : Shape{penWidth, symmetryCount, mirrorType, penColor}
+    , startPoint_{startPoint}
 {
 }
 

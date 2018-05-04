@@ -15,6 +15,7 @@ class SymmetricCanvas : public QQuickPaintedItem
 	Q_PROPERTY(QColor color READ color WRITE setColor)
 	Q_PROPERTY(int penWidth READ penWidth WRITE setPenWidth)
 	Q_PROPERTY(int symmetryCount READ symmetryCount WRITE setSymmetryCount)
+	Q_PROPERTY(ShapeMirrorType mirrorType READ mirrorType WRITE setMirrorType)
 	Q_PROPERTY(QString currentShape READ currentShape WRITE setCurrentShape)
 
 public:
@@ -29,6 +30,9 @@ public:
 
 	int symmetryCount() const;
 	void setSymmetryCount(int symmetryCount);
+
+	ShapeMirrorType mirrorType() const;
+	void setMirrorType(const ShapeMirrorType &mirrorType);
 
 	QString currentShape() const;
 	void setCurrentShape(const QString & shapeName);
@@ -49,6 +53,7 @@ private:
 	QColor color_;
 	int penWidth_;
 	int symmetryCount_;
+	ShapeMirrorType mirrorType_;
 	QImage canvasImage_;
 	History paintHistory_;
 

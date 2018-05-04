@@ -7,7 +7,7 @@ class Rectangle : public Shape
 public:
 	explicit Rectangle(const QPointF & startPoint,
 	                   int penWidth_,
-	                   int symmetryCount,
+	                   int symmetryCount, const ShapeMirrorType & mirrorType,
 	                   const QColor & penColor_);
 	virtual void update(const QPointF & currentPoint) override;
 

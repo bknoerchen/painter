@@ -6,10 +6,11 @@
 
 SymmetricCanvas::SymmetricCanvas(QQuickItem *parent)
     : QQuickPaintedItem(parent)
-    , penWidth_(2)
-    , symmetryCount_(1)
-    , canvasImage_(10, 10, QImage::Format_RGB32)
-    , currentShapeFactory_(0)
+    , penWidth_{2}
+    , symmetryCount_{1}
+    , mirrorType_{ShapeMirrorType::MirrorOff}
+    , canvasImage_{10, 10, QImage::Format_RGB32}
+    , currentShapeFactory_{0}
 {
 }
 
@@ -41,6 +42,16 @@ int SymmetricCanvas::symmetryCount() const
 void SymmetricCanvas::setSymmetryCount(int symmetryCount)
 {
 	symmetryCount_ = symmetryCount;
+}
+
+ShapeMirrorType SymmetricCanvas::mirrorType() const
+{
+	return mirrorType_;
+}
+
+void SymmetricCanvas::setMirrorType(const ShapeMirrorType & mirrorType)
+{
+	mirrorType_ = mirrorType;
 }
 
 QString SymmetricCanvas::currentShape() const
@@ -93,7 +104,7 @@ void SymmetricCanvas::geometryChanged(const QRectF & newGeometry, const QRectF &
 
 void SymmetricCanvas::startPaint(const QPointF & startPoint, int id)
 {
-	currentShapes_[id] = currentShapeFactory_(startPoint, penWidth_, symmetryCount_, color_);
+	currentShapes_[id] = currentShapeFactory_(startPoint, penWidth_, symmetryCount_, mirrorType_, color_);
 }
 
 void SymmetricCanvas::updatePaint(const QPointF & currentPoint, int id)

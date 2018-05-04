@@ -2,10 +2,11 @@
 
 #include <QPen>
 
-Shape::Shape(int penWidth, int symmetryCount, const QColor & penColor)
-    : penWidth_(penWidth)
-    , symmetryCount_(symmetryCount)
-    , penColor_(penColor)
+Shape::Shape(int penWidth, int symmetryCount, const ShapeMirrorType & mirrorType, const QColor & penColor)
+    : penWidth_{penWidth}
+    , symmetryCount_{symmetryCount}
+    , mirrorType_{mirrorType}
+    , penColor_{penColor}
 {
 }
 
@@ -21,14 +22,30 @@ void Shape::draw(QPainter & painter)
 	                    Qt::RoundCap, Qt::SvgMiterJoin));
 	painter.setRenderHints(QPainter::Antialiasing, true);
 
-	drawImpl(painter);
-	for (int i = 1; i < symmetryCount_; i++) {
+	for (int i = 0; i < symmetryCount_; i++) {
+		painter.save();
 		painter.translate(painter.window().width() / 2, painter.window().height() / 2);
-		painter.rotate(360 / symmetryCount_);
+		painter.rotate(i * (float)360 / (float)symmetryCount_);
 		painter.translate(-painter.window().width() / 2, -painter.window().height() / 2);
 		drawImpl(painter);
-	}
+		painter.restore();
 
+		if (mirrorType_ != ShapeMirrorType::MirrorOff) {
+			painter.save();
+			painter.translate(painter.window().width() / 2, painter.window().height() / 2);
+
+			if (mirrorType_ == ShapeMirrorType::MirrorOnX) {
+				painter.scale(1.0, -1.0);
+			} else if (mirrorType_ == ShapeMirrorType::MirrorOnY) {
+				painter.scale(-1.0, 1.0);
+			}
+
+			painter.rotate(i * (float)360 / (float)symmetryCount_);
+			painter.translate(-painter.window().width() / 2, -painter.window().height() / 2);
+			drawImpl(painter);
+			painter.restore();
+		}
+	}
 	painter.restore();
 }
 

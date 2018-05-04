@@ -2,13 +2,15 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 
 import SymmetricCanvas 1.0
+//import ShapeMirrorType 1.0
 
 Item {
     anchors.fill: parent
 
     Component.onCompleted: {
         shapeSelector.currentIndex = 0;
-        myCanvas.symmetryCount = 20;
+        mirrorType.currentIndex = 0;
+        myCanvas.symmetryCount = 5;
     }
 
     Row {
@@ -22,13 +24,32 @@ Item {
             height: 20
 
             model: ListModel {
-                id: cbItems
+                id: shapeSelectorItems
                 ListElement { text: "Polyline";  shape: "Polyline" }
                 ListElement { text: "Rectangle"; shape: "Rectangle" }
                 ListElement { text: "Ellipse";   shape: "Ellipse" }
             }
             onCurrentIndexChanged: {
-                myCanvas.currentShape = cbItems.get(currentIndex).shape;
+                myCanvas.currentShape = shapeSelectorItems.get(currentIndex).shape;
+            }
+        }
+
+        ComboBox {
+            id: mirrorType
+
+            anchors.top: parent.top
+            width: 200
+            height: 20
+
+            model: ListModel {
+                id: mirrorTypeItems
+                ListElement { text: "Keine";  mirrorType: ShapeMirrorType.MirrorOff }
+                ListElement { text: "X-Axis"; mirrorType: ShapeMirrorType.MirrorOnX }
+                ListElement { text: "Y-Axis"; mirrorType: ShapeMirrorType.MirrorOnY }
+            }
+            onCurrentIndexChanged: {
+                console.log(mirrorTypeItems.get(currentIndex).mirrorType);
+                myCanvas.mirrorType = mirrorTypeItems.get(currentIndex).mirrorType;
             }
         }
 

@@ -2,9 +2,9 @@
 
 Polyline::Polyline(const QPointF & startPoint,
                    int penWidth,
-                   int symmetryCount,
+                   int symmetryCount, const ShapeMirrorType & mirrorType,
                    const QColor & penColor)
-    : Shape(penWidth, symmetryCount, penColor)
+    : Shape{penWidth, symmetryCount, mirrorType, penColor}
 {
 	polylinePoints_ << startPoint;
 }

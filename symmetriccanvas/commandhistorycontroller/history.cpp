@@ -3,8 +3,8 @@
 #include "command.h"
 
 History::History()
-    : lastExecuted_(-1)
-    , lastSaved_(-1)
+    : lastExecuted_{-1}
+    , lastSaved_{-1}
 {
 }
 
