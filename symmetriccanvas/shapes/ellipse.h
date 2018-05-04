@@ -6,8 +6,9 @@ class Ellipse : public Shape
 {
 public:
 	explicit Ellipse(const QPointF & startPoint,
-	                int penWidth,
-	                const QColor & penColor);
+	                 int penWidth_,
+	                 int symmetryCount,
+	                 const QColor & penColor_);
 	virtual void update(const QPointF & currentPoint) override;
 
 protected:

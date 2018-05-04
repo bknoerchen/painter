@@ -8,6 +8,7 @@ Item {
 
     Component.onCompleted: {
         shapeSelector.currentIndex = 0;
+        myCanvas.symmetryCount = 20;
     }
 
     Row {
@@ -45,6 +46,34 @@ Item {
                 myCanvas.redo();
             }
         }
+
+
+//        Component {
+//            id: symmetryCountTumblerDelegate
+
+//            Label {
+//                color: "white"
+//                text: modelData + 1
+//                opacity: 1.0 - Math.abs(Tumbler.displacement) / (Tumbler.tumbler.visibleItemCount / 2)
+//                horizontalAlignment: Text.AlignHCenter
+//                verticalAlignment: Text.AlignVCenter
+//                font.pixelSize: fontMetrics.font.pixelSize * 1.25
+//            }
+//        }
+
+//        Tumbler {
+//            id: symmetryCountTumbler
+
+//            width: 50
+//            model: 20
+//            delegate: symmetryCountTumblerDelegate
+//            visibleItemCount: 5
+//            currentIndex: 4
+
+//            onCurrentIndexChanged: {
+//                myCanvas.symmetryCount = currentIndex + 1;
+//            }
+//        }
 
     }
 

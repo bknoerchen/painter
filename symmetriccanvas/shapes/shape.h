@@ -6,7 +6,7 @@
 class Shape
 {
 public:
-	Shape(int penWidth, const QColor & penColor);
+	Shape(int penWidth, int symmetryCount, const QColor & penColor);
 	virtual ~Shape();
 
 	void draw(QPainter & painter);
@@ -18,6 +18,7 @@ protected:
 	virtual QRectF getBoundingRectImpl() const = 0;
 
 private:
-	int penWidth;
-	QColor penColor;
+	int penWidth_;
+	int symmetryCount_;
+	QColor penColor_;
 };

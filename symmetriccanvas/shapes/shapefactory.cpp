@@ -16,7 +16,7 @@ const std::map<ShapeType, ShapeFactoryFunction> ShapeFactory::shapeFactoryRegist
 };
 
 template<typename ShapeType>
-std::unique_ptr<Shape> ShapeFactory::create(const QPointF & startPoint, int penWidth, const QColor & penColor)
+std::unique_ptr<Shape> ShapeFactory::create(const QPointF & startPoint, int penWidth, int symmetryCount, const QColor & penColor)
 {
-	return std::unique_ptr<Shape>(new ShapeType(startPoint, penWidth, penColor));
+	return std::unique_ptr<Shape>(new ShapeType(startPoint, penWidth, symmetryCount, penColor));
 }

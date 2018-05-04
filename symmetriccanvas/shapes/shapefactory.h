@@ -9,7 +9,7 @@
 #include "memory"
 
 
-typedef std::function<std::unique_ptr<Shape>(const QPointF &, int, const QColor &)> ShapeFactoryFunction;
+typedef std::function<std::unique_ptr<Shape>(const QPointF &, int, int, const QColor &)> ShapeFactoryFunction;
 
 class ShapeType {
 	Q_GADGET
@@ -49,7 +49,7 @@ public:
 
 	template <typename ShapeType>
 	static std::unique_ptr<Shape> create(const QPointF & startPoint, int penWidth,
-	                                     const QColor & penColor);
+	                                     int symmetryCount, const QColor & penColor);
 
 private:
 	static const std::map<ShapeType, ShapeFactoryFunction> shapeFactoryRegistration_;

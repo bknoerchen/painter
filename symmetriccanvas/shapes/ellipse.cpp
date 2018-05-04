@@ -1,9 +1,10 @@
 #include "ellipse.h"
 
 Ellipse::Ellipse(const QPointF & startPoint,
-               int penWidth,
-               const QColor & penColor)
-    : Shape(penWidth, penColor)
+                 int penWidth,
+                 int symmetryCount,
+                 const QColor & penColor)
+    : Shape(penWidth, symmetryCount, penColor)
     , startPoint_(startPoint)
 {
 }

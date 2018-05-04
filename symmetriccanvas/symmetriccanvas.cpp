@@ -7,6 +7,7 @@
 SymmetricCanvas::SymmetricCanvas(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , penWidth_(2)
+    , symmetryCount_(1)
     , canvasImage_(10, 10, QImage::Format_RGB32)
     , currentShapeFactory_(0)
 {
@@ -30,6 +31,16 @@ int SymmetricCanvas::penWidth() const
 void SymmetricCanvas::setPenWidth(int penWidth)
 {
 	penWidth_ = penWidth;
+}
+
+int SymmetricCanvas::symmetryCount() const
+{
+	return symmetryCount_;
+}
+
+void SymmetricCanvas::setSymmetryCount(int symmetryCount)
+{
+	symmetryCount_ = symmetryCount;
 }
 
 QString SymmetricCanvas::currentShape() const
@@ -82,7 +93,7 @@ void SymmetricCanvas::geometryChanged(const QRectF & newGeometry, const QRectF &
 
 void SymmetricCanvas::startPaint(const QPointF & startPoint, int id)
 {
-	currentShapes_[id] = currentShapeFactory_(startPoint, penWidth_, color_);
+	currentShapes_[id] = currentShapeFactory_(startPoint, penWidth_, symmetryCount_, color_);
 }
 
 void SymmetricCanvas::updatePaint(const QPointF & currentPoint, int id)
