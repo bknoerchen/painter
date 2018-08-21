@@ -1,8 +1,7 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.0
 
 import SymmetricCanvas 1.0
-//import ShapeMirrorType 1.0
 
 Item {
     anchors.fill: parent
@@ -16,16 +15,25 @@ Item {
     Row {
         id: controls
 
+        height: 50
+
         ComboBox {
             id: symetryCountSelector
 
             anchors.top: parent.top
-            width: 200
+            anchors.bottom: parent.bottom
+
             height: 20
 
             model: 50
+            displayText: currentIndex + 1
+
+            delegate: ItemDelegate {
+                 text: index + 1
+             }
+
             onCurrentIndexChanged: {
-                myCanvas.symmetryCount = currentIndex;
+                myCanvas.symmetryCount = currentIndex + 1;
             }
         }
 
@@ -33,8 +41,10 @@ Item {
             id: shapeSelector
 
             anchors.top: parent.top
+            anchors.bottom: parent.bottom
             width: 200
-            height: 20
+
+            textRole: "text"
 
             model: ListModel {
                 id: shapeSelectorItems
@@ -42,6 +52,7 @@ Item {
                 ListElement { text: "Rectangle"; shape: "Rectangle" }
                 ListElement { text: "Ellipse";   shape: "Ellipse" }
             }
+
             onCurrentIndexChanged: {
                 myCanvas.currentShape = shapeSelectorItems.get(currentIndex).shape;
             }
@@ -51,8 +62,11 @@ Item {
             id: mirrorType
 
             anchors.top: parent.top
+            anchors.bottom: parent.bottom
             width: 200
             height: 20
+
+            textRole: "text"
 
             model: ListModel {
                 id: mirrorTypeItems
@@ -60,6 +74,7 @@ Item {
                 ListElement { text: "X-Axis"; mirrorType: ShapeMirrorType.MirrorOnX }
                 ListElement { text: "Y-Axis"; mirrorType: ShapeMirrorType.MirrorOnY }
             }
+
             onCurrentIndexChanged: {
                 console.log(mirrorTypeItems.get(currentIndex).mirrorType);
                 myCanvas.mirrorType = mirrorTypeItems.get(currentIndex).mirrorType;
@@ -67,13 +82,20 @@ Item {
         }
 
         Button {
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
             text: "Undo"
+
             onClicked: {
                 myCanvas.undo();
             }
         }
 
         Button {
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
             text: "Redo"
 
             onClicked: {
