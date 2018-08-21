@@ -10,11 +10,24 @@ Item {
     Component.onCompleted: {
         shapeSelector.currentIndex = 0;
         mirrorType.currentIndex = 0;
-        myCanvas.symmetryCount = 5;
+        myCanvas.symmetryCount = 20;
     }
 
     Row {
         id: controls
+
+        ComboBox {
+            id: symetryCountSelector
+
+            anchors.top: parent.top
+            width: 200
+            height: 20
+
+            model: 50
+            onCurrentIndexChanged: {
+                myCanvas.symmetryCount = currentIndex;
+            }
+        }
 
         ComboBox {
             id: shapeSelector
